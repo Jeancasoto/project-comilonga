@@ -12,23 +12,26 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^2.0.4",
-		"autoprefixer": "^10.4.2",
-		"daisyui": "^2.51.5",
-		"postcss": "^8.4.21",
-		"tailwindcss": "^3.3.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
+		"@sveltejs/vite-plugin-svelte": "^2.0.4",
 		"@types/cookie": "^0.5.1",
+		"autoprefixer": "^10.4.2",
+		"daisyui": "^2.51.5",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
+		"postcss": "^8.4.21",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
 		"svelte": "^4.0.0",
 		"svelte-check": "^3.4.3",
+		"tailwindcss": "^3.3.1",
 		"typescript": "^5.0.0",
 		"vite": "^4.3.6"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"firebase": "^9.23.0"
+	}
 }
