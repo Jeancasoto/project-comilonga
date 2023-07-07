@@ -1,6 +1,7 @@
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
+	import './admin_styles.css'
 </script>
 
 <div class="app">
