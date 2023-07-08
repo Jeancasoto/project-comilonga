@@ -1,30 +1,31 @@
 <script>
 	import { db } from '$lib/firebase';
+	import FormularioProductos from '$lib/components/FormularioProductos.svelte';
 	import { collectionGroup, getDocs } from 'firebase/firestore';
 	import { onMount } from 'svelte';
-	let name = '';
-	let startDate = '';
+	let producto = {};
 	onMount(async () => {
-		const testCollection = collectionGroup(db, 'test');
+		const testCollection = collectionGroup(db, 'productos');
 		const docs = await getDocs(testCollection);
 		const mappedDocs = docs.docs.map((t) => t.data());
 		const first = mappedDocs[0];
-		name = `${first.firstName} ${first.lastName}`;
-		startDate = new Date(first.startDate).toISOString();
+		producto = first;
 	});
+	let isAgregar = true;
 </script>
 
 <div class="flex justify-center items-center flex-col">
-	<div class="hero min-h-screen bg-base-200">
-		<div class="hero-content text-center">
-			<div class="max-w-md">
-				<h1 class="text-5xl font-bold">Hello {name}</h1>
-				<p class="py-6">
-					Provident cupiditate voluptatem et in. Quaerat {startDate} ut assumenda excepturi exercitationem
-					quasi. In deleniti eaque aut repudiandae et a id nisi.
-				</p>
-				<button class="btn btn-primary">Get Started</button>
-			</div>
-		</div>
-	</div>
+	<button
+		class="btn btn-primary"
+		on:click={() => {
+			isAgregar = !isAgregar;
+		}}
+	>
+		Cambiar
+	</button>
+	{#if isAgregar}
+		<FormularioProductos />
+	{:else}
+		<FormularioProductos {producto} />
+	{/if}
 </div>
