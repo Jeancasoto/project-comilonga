@@ -1,11 +1,14 @@
 <script>
-	import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+	import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 	import { db, storage } from '$lib/firebase';
-	import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+	import { getFileDownloadURL } from '$lib/helpers/firebase';
+	import { ref, uploadBytes } from 'firebase/storage';
 	import * as yup from 'yup';
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let producto;
+
+	const dispatch = createEventDispatcher();
 
 	const schema = yup.object().shape({
 		nombre: yup.string().required('Por favor ingresar un nombre').ensure(),
@@ -31,8 +34,7 @@
 
 	onMount(async () => {
 		if (producto && producto.imagen) {
-			const url = await getDownloadURL(ref(storage, producto?.imagen));
-			uploadedImage = url;
+			uploadedImage = await getFileDownloadURL(producto?.imagen);
 		}
 	});
 
@@ -46,7 +48,6 @@
 			if (producto) {
 				// Falta agregar logica de editar
 				const docRef = doc(db, 'productos', producto.id);
-				console.log(data.imagen);
 				if (data.imagen.size !== 0) {
 					const imagePath = `productos/${docRef.id}/imagen.jpg`;
 					const imgRef = ref(storage, imagePath);
@@ -55,7 +56,6 @@
 				} else {
 					delete data['imagen'];
 				}
-				console.log(data);
 				const info = await updateDoc(docRef, data);
 			} else {
 				const collectionRef = collection(db, 'productos');
@@ -81,13 +81,15 @@
 
 <div class="flex justify-center w-full">
 	<form on:submit|preventDefault={onSubmit}>
-		<div class="flex justify-center">
-			<div class="avatar">
-				<div class="w-32 rounded-full">
-					<img src={uploadedImage} alt="Imagen del producto" />
+		{#if uploadedImage !== ''}
+			<div class="flex justify-center">
+				<div class="avatar">
+					<div class="w-32 rounded-full">
+						<img src={uploadedImage} alt="Imagen del producto" />
+					</div>
 				</div>
 			</div>
-		</div>
+		{/if}
 		<div class="form-control w-full max-w-xs">
 			<label class="label" for="nombre">
 				<span class="label-text font-bold">Nombre del producto</span>
@@ -146,7 +148,14 @@
 			{/if}
 		</div>
 		<div class="flex flex-row justify-between mt-4">
-			<button type="button" class="btn btn-danger">Cancelar</button>
+			<button
+				type="button"
+				class="btn btn-danger"
+				on:click={() => {
+					dispatch('cancel');
+					uploadedImage = '';
+				}}>Cancelar</button
+			>
 			<button type="submit" class="btn btn-success">{`${producto ? 'Editar' : 'Crear'}`}</button>
 		</div>
 	</form>
