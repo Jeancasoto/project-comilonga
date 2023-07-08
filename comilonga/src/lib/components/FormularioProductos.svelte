@@ -7,6 +7,16 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let producto;
+	let uploadedImage = '';
+	let errors = {};
+
+	$: {
+		if (producto && producto.imagen) {
+			getFileDownloadURL(producto?.imagen).then((url) => {
+				uploadedImage = url;
+			});
+		}
+	}
 
 	const dispatch = createEventDispatcher();
 
@@ -28,20 +38,8 @@
 			})
 	});
 
-	let errors = {};
-
-	let uploadedImage = '';
-
-	onMount(async () => {
-		if (producto && producto.imagen) {
-			uploadedImage = await getFileDownloadURL(producto?.imagen);
-		}
-	});
-
 	async function onSubmit(e) {
 		try {
-			// `abortEarly: false` to get all the errors
-
 			const formData = new FormData(e.target);
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
