@@ -1,6 +1,7 @@
-import { initializeApp } from 'firebase/app';
+import { deleteApp, getApp, getApps, initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 import {
 	PUBLIC_API_KEY,
 	PUBLIC_AUTH_DOMAIN,
@@ -19,7 +20,15 @@ const firebaseConfig = {
 	appId: PUBLIC_APP_ID
 };
 
-let app = initializeApp(firebaseConfig, 'CLIENT');
-const auth = getAuth(app);
-let db = getFirestore(app);
-export { auth, db };
+let app;
+if (getApps().length > 0) {
+	app = getApp();
+	deleteApp(app);
+	app = initializeApp(firebaseConfig);
+} else {
+	app = initializeApp(firebaseConfig);
+}
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
