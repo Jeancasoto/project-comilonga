@@ -1,5 +1,5 @@
 <script>
-	import { addDoc, collection, updateDoc } from 'firebase/firestore';
+	import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 	import { db, storage } from '$lib/firebase';
 	import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 	import * as yup from 'yup';
@@ -45,13 +45,25 @@
 			await schema.validate(data, { abortEarly: false });
 			if (producto) {
 				// Falta agregar logica de editar
+				const docRef = doc(db, 'productos', producto.id);
+				console.log(data.imagen);
+				if (data.imagen.size !== 0) {
+					const imagePath = `productos/${docRef.id}/imagen.jpg`;
+					const imgRef = ref(storage, imagePath);
+					const info = await uploadBytes(imgRef, data['imagen']);
+					data['imagen'] = imagePath;
+				} else {
+					delete data['imagen'];
+				}
+				console.log(data);
+				const info = await updateDoc(docRef, data);
 			} else {
 				const collectionRef = collection(db, 'productos');
 				const doc = await addDoc(collectionRef, { ...data, imagen: '' });
 				const imagePath = `productos/${doc.id}/imagen.jpg`;
 				const imgRef = ref(storage, imagePath);
 				const info = await uploadBytes(imgRef, data['imagen']);
-				updateDoc(doc, { imagen: imagePath });
+				await updateDoc(doc, { imagen: imagePath });
 			}
 		} catch (error) {
 			if (error instanceof yup.ValidationError) {
@@ -99,7 +111,7 @@
 				<span class="label-text font-bold">Descripcion del producto</span>
 			</label>
 			<textarea
-				value={producto?.Descripcion ?? ''}
+				value={producto?.descripcion ?? ''}
 				name="descripcion"
 				placeholder="Orden de tacos bañados en salsa..."
 				class="textarea textarea-bordered"

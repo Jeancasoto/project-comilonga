@@ -9,23 +9,11 @@
 		const docs = await getDocs(testCollection);
 		const mappedDocs = docs.docs.map((t) => t.data());
 		const first = mappedDocs[0];
-		producto = first;
+		producto = { id: docs.docs[0].id, ...first };
 	});
 	let isAgregar = true;
 </script>
 
 <div class="flex justify-center items-center flex-col">
-	<button
-		class="btn btn-primary"
-		on:click={() => {
-			isAgregar = !isAgregar;
-		}}
-	>
-		Cambiar
-	</button>
-	{#if isAgregar}
-		<FormularioProductos />
-	{:else}
-		<FormularioProductos {producto} />
-	{/if}
+	<h1>Pagina principal</h1>
 </div>
