@@ -1,6 +1,6 @@
 <script>
 	import { db } from '$lib/firebase';
-	import { collectionGroup, getDocs } from 'firebase/firestore';
+	import { collectionGroup, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
 	import { getFileDownloadURL } from '$lib/helpers/firebase';
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
@@ -38,6 +38,10 @@
 			{#if modalType === 'CREATE' || modalType === 'EDIT'}
 				<FormularioProductos
 					producto={modalType === 'EDIT' ? selectedProduct : undefined}
+					on:success={(param) => {
+						shouldShowModal = false;
+						console.log(param);
+					}}
 					on:cancel={() => {
 						shouldShowModal = false;
 					}}
@@ -50,7 +54,9 @@
 					<!-- if there is a button in form, it will close the modal -->
 					<button
 						class="btn btn-error"
-						on:click={() => {
+						on:click={async () => {
+							const docRef = doc(db, 'productos', selectedProduct.id);
+							await deleteDoc(docRef);
 							shouldShowModal = false;
 						}}>Eliminar</button
 					>

@@ -4,7 +4,7 @@
 	import { getFileDownloadURL } from '$lib/helpers/firebase';
 	import { ref, uploadBytes } from 'firebase/storage';
 	import * as yup from 'yup';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let producto;
 	let uploadedImage = '';
@@ -23,12 +23,17 @@
 	const schema = yup.object().shape({
 		nombre: yup.string().required('Por favor ingresar un nombre').ensure(),
 		descripcion: yup.string().required('Por favor ingresar una descripcion').ensure(),
+		precio: yup
+			.number()
+			.transform((value) => parseFloat(value))
+			.positive('El precio debe ser una cifra positiva')
+			.required('Por favor ingresar un precio'),
 		imagen: yup
 			.mixed()
 			.notRequired()
 			.test('required', 'Por favor seleccionar una imagen', (value) => {
 				// Hacer el campo no requerido, si hay producto con imagen
-				if (producto.imagen) return true;
+				if (producto && producto.imagen) return true;
 				return value && value.size > 0 && value.name !== '';
 			})
 			.test('type', 'Solo los siguientes formatos son acceptados: .jpeg, .jpg o .png', (value) => {
@@ -55,15 +60,18 @@
 					delete data['imagen'];
 				}
 				const info = await updateDoc(docRef, data);
+				dispatch('success', info);
 			} else {
 				const collectionRef = collection(db, 'productos');
 				const doc = await addDoc(collectionRef, { ...data, imagen: '' });
 				const imagePath = `productos/${doc.id}/imagen.jpg`;
 				const imgRef = ref(storage, imagePath);
-				const info = await uploadBytes(imgRef, data['imagen']);
-				await updateDoc(doc, { imagen: imagePath });
+				await uploadBytes(imgRef, data['imagen']);
+				const info = await updateDoc(doc, { imagen: imagePath });
+				dispatch('success', info);
 			}
 		} catch (error) {
+			console.log(error);
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);
 			}
@@ -105,7 +113,30 @@
 				</label>
 			{/if}
 		</div>
-
+		<div class="form-control w-full max-w-xs">
+			<label class="label" for="precio">
+				<span class="label-text font-bold">Precio del producto</span>
+			</label>
+			<input
+				value={producto?.precio ?? ''}
+				name="precio"
+				type="text"
+				placeholder="50.00..."
+				class="input input-bordered w-full max-w-xs"
+				on:change={(e) => {
+					let newNumber = Number(e.currentTarget.value.toString());
+					if (isNaN(newNumber)) {
+						newNumber = 0;
+					}
+					e.currentTarget.value = newNumber.toFixed(2);
+				}}
+			/>
+			{#if errors.precio}
+				<label class="label" for="precio">
+					<span class="label-text-alt text-red-500">{errors.precio}</span>
+				</label>
+			{/if}
+		</div>
 		<div class="form-control w-full max-w-xs">
 			<label class="label" for="descripcion">
 				<span class="label-text font-bold">Descripcion del producto</span>
