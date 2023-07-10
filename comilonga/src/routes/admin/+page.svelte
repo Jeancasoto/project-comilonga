@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>About</title>
+	<title>Admin la comilonga</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 
@@ -29,7 +29,7 @@
 			<button class="btn btn-outline">Productos</button>
 		</div>
 		<div class="menu_exit_container">
-			<button class="btn btn-outline">Salir</button>
+			<button class=" btn btn-outline ">Salir</button>
 		</div>
 	</div>
 	<div class="wrapper_container">
@@ -48,32 +48,41 @@
 		display: flex;
 		flex-direction: column;
 
-		background-color: rgb(255, 255, 255)
-	}
+		border-color: rgb(195, 219, 224);
+		border-radius: 1rem;
+		border-width: 2px;
+
+		background-color: rgb(246, 246, 254)	}
 	.menu_logo_container {
 
-		height: 30%;
+		height: 35vh;
 	}
 	.menu_options_container {
 
-		align-self:center;
-
-		height: 35%;
+		height: 35vh;
 		width: 100%;
 	}
 	.menu_exit_container {		
-
-		width: 100%;		
+		display: flex;
+		align-items: end;
+		width: 100%;
+		height: 30vh;		
 	}
 
+
 	.wrapper_container {
-		height: 100vh;
 		width: 80%;
+		height: 100vh;
+
+		overflow:scroll;
+
+		background-color: rgb(255, 255, 255);
 	}
 
 	.admin_wrapper {
 		display: flex;
-		align-items: center;
+		flex-direction: row;
+
 	}
 
 	.logo_container{

@@ -1,11 +1,20 @@
-import { getDocs, collection} from 'firebase/firestore';
+import { getDocs, collection, onSnapshot} from 'firebase/firestore';
 import { db, storage } from '$lib/firebase';
 
 
 export const getGenerals = async () => {
-    const querySnapshot = await getDocs(collection(db, "generales"));
-    querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
+    const generals_doc = (collection(db, "generales"))
+    let data = {
+        quienes_somos: '',
+        mision: '',
+        vision: '',
+    }
+    const unsubscribe = onSnapshot(generals_doc, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            let aux = doc.data();
+            data['quienes_somos'] = aux['quienes_somos']
+        });
+        console.log(data);
+        return data;
     });
 };
