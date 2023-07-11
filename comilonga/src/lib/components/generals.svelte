@@ -7,7 +7,7 @@
 	import { bool } from 'yup';
 
 	let quienes_somos = '';
-	let nuestra_mision = '';
+	export let nuestra_mision = '';
 	let nuestra_vision = '';
 
 	let facebook_link = '';
@@ -17,14 +17,32 @@
 	let error_saving = false;
 	let success_saving = false;
 
+    // i guess de esta forma puedo llamar la funcion al solo cargar la pagina
+    // $: loadData()
+    $: {
+        loadData()
+    }
 	const handle_close_alert = () => {
 		error_saving = false;
 		success_saving = false;
 	};
 
-	getGenerals().then((aux) => {
-		console.log(aux);
-	});
+    const loadData = () =>{
+
+        getGenerals().then((result) => {
+        
+            quienes_somos = result.quienes_somos;
+            nuestra_mision = result.nuestra_mision;
+            nuestra_vision = result.nuestra_vision;
+
+            facebook_link = result.facebook_link
+            instagram_link = result.instagram_link
+            whatsapp_link = result.whatsapp_link
+
+            console.log(quienes_somos)
+        })
+    }
+
 
 	const handle_form_submit = async () => {
 		try {
