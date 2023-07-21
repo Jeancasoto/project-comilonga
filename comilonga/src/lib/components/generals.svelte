@@ -5,7 +5,7 @@
 
 	import { logo } from '$lib/store';
 
-	import { getFileDownloadURL, getGenerals, getGeneralDocId } from '$lib/helpers/admin_helper';
+	import { getFileDownloadURL, getGenerals, getGeneralDocId } from '$lib/helpers/firebase';
 
 	import { onMount } from 'svelte';
 
