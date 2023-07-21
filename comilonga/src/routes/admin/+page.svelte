@@ -1,87 +1,122 @@
 <script>
 	import Generals from '$lib/components/generals.svelte';
+	import Formulario from '$lib/components/FormularioProductos.svelte';
+	import { logo } from '$lib/store';
+	// ejemplo de lo que la linea de arriba sustituye
+	// import Generals from '../../components/generals.svelte';
+
+	let logo_url ; 
+
+	logo.subscribe((data) => {
+		logo_url = data;
+		console.log(data);
+		console.log(logo);
+		console.log(logo_url);
+	});
+
+
 </script>
 
+
 <svelte:head>
-	<title>About</title>
+	<title>Admin la comilonga</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 
 <div class="admin_wrapper">
-	<div class="left_menu">
-		<h1>div izq</h1>
-		<div class="menu_logo_container">
-			<h1>div foto</h1>
-		</div>
-		<div class="menu_options_container">
-			<button>Generales</button>
-			<button>Productos</button>
-			<h1>div opciones</h1>
-		</div>
-		<div class="menu_exit_container">
-			<button>Salir</button>
-			<h1>div salir</h1>
-		</div>
-	</div>
 	<div class="wrapper_container">
-		<h1>div derecha</h1>
+		<div class="left_menu drawer lg:drawer-open ">
+			<div class="menu_logo_container">
+				<div class="logo_container">
+					<div class="avatar">
+						<div class="w-38 rounded-full">
+							<img
+								alt="Logo comilonga"
+								src= {logo_url}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="menu_options_container">
+				<button class="btn btn-outline">Generales</button>
+				<button class="btn btn-outline">Productos</button>
+			</div>
+			<div class="menu_exit_container">
+				<button class=" btn btn-outline">Salir</button>
+			</div>
+		</div>
+
 		<Generals />
 	</div>
 </div>
 
 <style>
+	.btn {
+		width: 100%;
+		border-radius: 0;
+		border-width: 0.2 rem;
+		border-color:#9DB2BF;
+
+		margin-top: 2px;
+	}
+	.btn:hover{
+	
+		background-color: #C4DFDF;
+	}
 	.left_menu {
-		height: 100vh;
-		width: 20%;
+		max-width: 20vw;
+		height: 100%;
 
 		display: flex;
 		flex-direction: column;
 
-		background-color: black;
-	}
+		justify-content: space-between;
 
-	.wrapper_container {
-		height: 100vh;
-		width: 80%;
-		background-color: blue;
-	}
+		border-color: rgb(195, 219, 224);
+		border-width: 1px;
 
-	.admin_wrapper {
-		display: flex;
-		align-items: center;
+		background-color: #D2E9E9;
 	}
-
 	.menu_logo_container {
-		background-color: aliceblue;
-
-		height: 30%;
+		height: 35vh;
 	}
 	.menu_options_container {
-		background-color: rgb(237, 212, 212);
-
-		display: flex;
-		flex-direction: column;
-		height: 35%;
+		height: 35vh;
+		width: 100%;
 	}
 	.menu_exit_container {
 		display: flex;
-		flex-direction: column;
-
-		background-color: rgb(213, 234, 234);
+		align-items: end;
+		width: 100%;
+		height: 30vh;
 	}
 
-	.form_container {
+	.wrapper_container {
+
+		width: 100%;
+
 		display: flex;
-		flex-direction: column;
-		background-color: black;
+	
+		overflow: scroll;
+
+		background-color: #E3F4F4;
 	}
 
-	.form_section_container {
-		background-color: rebeccapurple;
-	}
+	.admin_wrapper {
 
-	.form_section_savebutton {
+		width: 100%;
+
 		display: flex;
+		flex-direction: row;
+	}
+
+	.logo_container {
+		display: flex;
+
 		justify-content: center;
+		align-items: center;
+
+		padding: 10% 0%;
 	}
 </style>
