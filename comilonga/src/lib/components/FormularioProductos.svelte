@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 	import { db, storage } from '$lib/firebase';
 	import { getFileDownloadURL } from '$lib/helpers/firebase';
@@ -17,6 +19,7 @@
 				uploadedImage = url;
 			});
 		}
+		uploadedImage = '';
 	}
 
 	const dispatch = createEventDispatcher();
@@ -50,12 +53,11 @@
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
 			if (producto) {
-				// Falta agregar logica de editar
 				const docRef = doc(db, 'productos', producto.id);
 				if (data.imagen.size !== 0) {
 					const imagePath = `productos/${docRef.id}/imagen.jpg`;
 					const imgRef = ref(storage, imagePath);
-					const info = await uploadBytes(imgRef, data['imagen']);
+					await uploadBytes(imgRef, data['imagen']);
 					data['imagen'] = imagePath;
 				} else {
 					delete data['imagen'];
@@ -65,12 +67,16 @@
 			} else {
 				const collectionRef = collection(db, 'productos');
 				const doc = await addDoc(collectionRef, { ...data, imagen: '' });
+
 				const imagePath = `productos/${doc.id}/imagen.jpg`;
 				const imgRef = ref(storage, imagePath);
 				await uploadBytes(imgRef, data['imagen']);
+
 				const info = await updateDoc(doc, { imagen: imagePath });
 				dispatch('success', info);
 			}
+			uploadedImage = '';
+			e.target.reset();
 		} catch (error) {
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);
@@ -157,6 +163,7 @@
 				type="file"
 				accept="image/jpeg,image/png"
 				class="file-input file-input-bordered w-full max-w-xs"
+				value=""
 				on:change={(e) => {
 					if (e.currentTarget.files.length > 0) {
 						const file = e.currentTarget.files[0];
