@@ -74,7 +74,7 @@
 			{/if}
 		</div>
 	</div>
-	<div class="flex justify-end w-3/4 self-center mb-4">
+	<div class="flex justify-end w-full self-center mb-4">
 		<button
 			class="btn btn-success"
 			on:click={() => {
