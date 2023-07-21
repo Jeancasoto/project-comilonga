@@ -5,6 +5,7 @@
 	import { ref, uploadBytes } from 'firebase/storage';
 	import * as yup from 'yup';
 	import { createEventDispatcher } from 'svelte';
+	import { extractErrors } from '$lib/helpers/general';
 
 	export let producto;
 	let uploadedImage = '';
@@ -71,17 +72,10 @@
 				dispatch('success', info);
 			}
 		} catch (error) {
-			console.log(error);
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);
 			}
 		}
-	}
-
-	function extractErrors(err) {
-		return err.inner.reduce((acc, err) => {
-			return { ...acc, [err.path]: err.message };
-		}, {});
 	}
 </script>
 
