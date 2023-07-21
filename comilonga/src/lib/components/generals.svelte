@@ -33,25 +33,23 @@
 	// $:{
 	// 	loadData()
 	// }
-
-	onMount(async () => {
+	$: {
 		try {
-			await getGeneralDocId().then((docId) => {
+			getGeneralDocId().then((docId) => {
 				generals_doc_id = docId;
 				console.log(docId);
 				console.log(generals_doc_id);
 				getFileDownloadURL(`generales/${docId}/logo.jpg`).then((url) => {
-					uploadedImage = url
+					uploadedImage = url;
 					logo.set(url);
 					loadData();
 				});
 			});
-
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 			error_loading = true;
 		}
-	});
+	}
 
 	const handle_close_alert = () => {
 		error_saving = false;
@@ -60,7 +58,7 @@
 
 	const loadData = () => {
 		getGenerals(generals_doc_id).then((result) => {
-			console.log(result)
+			console.log(result);
 			quienes_somos = result.quienes_somos;
 			nuestra_mision = result.nuestra_mision;
 			nuestra_vision = result.nuestra_vision;
@@ -75,9 +73,9 @@
 		try {
 			// Guardando en firebase al guardar el formulario de generales
 			const docRef = await updateDoc(doc(db, 'generales', generals_doc_id), {
-				quienes_somos: quienes_somos != null ? quienes_somos: '',
-				nuestra_mision: nuestra_mision != null ? nuestra_mision: '',
-				nuestra_vision: nuestra_vision != null ? nuestra_vision: '',
+				quienes_somos: quienes_somos != null ? quienes_somos : '',
+				nuestra_mision: nuestra_mision != null ? nuestra_mision : '',
+				nuestra_vision: nuestra_vision != null ? nuestra_vision : '',
 
 				redes_sociales: {
 					facebook_link: facebook_link != null ? facebook_link : '',
@@ -89,13 +87,12 @@
 			logo_url = `generales/${generals_doc_id}/logo.jpg`;
 
 			// Esta parte hace update de la imagen en firebase storage
-			if (file_to_upload != null) {			
+			if (file_to_upload != null) {
 				const imgRef = ref(storage, logo_url);
 				const info = await uploadBytes(imgRef, file_to_upload);
-				console.log(file_to_upload)
+				console.log(file_to_upload);
 			}
 			// await updateDoc(docRef, { imagen: logo_url });
-
 		} catch (error) {
 			console.log(error);
 			error_saving = true;
@@ -269,7 +266,6 @@
 	.form_container {
 		max-height: inherit;
 		padding: 5% 10%;
-
 	}
 	.form_section_container {
 		display: flex;
