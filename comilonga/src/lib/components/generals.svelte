@@ -33,9 +33,9 @@
 	// $:{
 	// 	loadData()
 	// }
-	$: {
+	async function fetchData(){
 		try {
-			getGeneralDocId().then((docId) => {
+			await getGeneralDocId().then((docId) => {
 				generals_doc_id = docId;
 				console.log(docId);
 				console.log(generals_doc_id);
@@ -50,6 +50,10 @@
 			error_loading = true;
 		}
 	}
+
+	onMount(async () => {
+		await fetchData();
+	});
 
 	const handle_close_alert = () => {
 		error_saving = false;
