@@ -5,7 +5,7 @@
 	import { getFileDownloadURL } from '$lib/helpers/firebase';
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
-	import FormularioProductos from '$lib/components/FormularioProductos.svelte';
+	import FormularioProductos from '$lib/components/formularios/FormularioProductos.svelte';
 	import toast from 'svelte-french-toast';
 	let products = [];
 	let selectedProduct = {};
