@@ -2,7 +2,7 @@
 	import { auth } from '$lib/firebase';
 	import { auth as AuthStore } from '$lib/stores/auth';
 	import { extractErrors } from '$lib/helpers/general';
-	import { signInWithEmailAndPassword } from 'firebase/auth';
+	import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 	import { onMount } from 'svelte';
 	import * as yup from 'yup';
 	import { goto } from '$app/navigation';
@@ -19,15 +19,15 @@
 			.string()
 			.email('Por favor ingrese un correo valido')
 			.required('Por favor ingrese su correo')
-			.ensure(),
-		pass: yup.string().required('Por favor ingrese su contraseña').ensure()
+			.ensure()
 	});
 	async function onSubmit(e) {
 		try {
 			const formData = new FormData(e.target);
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
-			await signInWithEmailAndPassword(auth, data.email, data.pass);
+			await sendPasswordResetEmail(auth, data.email.toString());
+			goto('/admin/login');
 		} catch (error) {
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);
@@ -39,7 +39,9 @@
 <div class="w-full flex justify-center bg-base-content">
 	<div class="relative flex flex-col justify-center h-screen overflow-hidden">
 		<div class="w-full p-6 m-auto rounded-md shadow-md lg:max-w-lg bg-base-100">
-			<h1 class="text-3xl font-semibold text-center text-purple-700">Comilonga</h1>
+			<h1 class="text-3xl font-semibold text-center text-content">
+				Por favor ingrese un correo electronico
+			</h1>
 			<form class="space-y-4" on:submit|preventDefault={onSubmit}>
 				<div>
 					<label class="label" for="email">
@@ -57,25 +59,8 @@
 						</label>
 					{/if}
 				</div>
-				<div>
-					<label class="label" for="pass">
-						<span class="text-base label-text">Password</span>
-					</label>
-					<input
-						name="pass"
-						type="password"
-						placeholder="******"
-						class="w-full input input-bordered"
-					/>
-					{#if errors.pass}
-						<label class="label" for="pass">
-							<span class="label-text-alt text-red-500">{errors.pass}</span>
-						</label>
-					{/if}
-				</div>
-				<div class="flex justify-center flex-col items-center">
-					<button class="btn btn-primary" type="submit">Login</button>
-					<a class="link-secondary" href="/admin/forgot-password">Olvide mi contraseña</a>
+				<div class="flex justify-center">
+					<button class="btn btn-primary" type="submit">Enviar</button>
 				</div>
 			</form>
 		</div>
