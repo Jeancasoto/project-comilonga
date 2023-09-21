@@ -2,7 +2,6 @@
 	// @ts-nocheck
 	import FormularioGenerales from '$lib/components/formularios/FormularioGenerales.svelte';
 	import { getGeneralsDoc } from '$lib/helpers/firebase';
-	import { logo } from '$lib/stores/cart';
 	import { onMount } from 'svelte';
 
 	let generals = {};
@@ -10,7 +9,6 @@
 		try {
 			await getGeneralsDoc().then((doc) => {
 				generals = { ...doc.data(), id: doc.id };
-				logo.set(generals.imagen);
 			});
 		} catch (error) {
 			console.log(error);
