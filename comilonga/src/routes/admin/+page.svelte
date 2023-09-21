@@ -2,7 +2,7 @@
 	// @ts-nocheck
 	import FormularioGenerales from '$lib/components/formularios/FormularioGenerales.svelte';
 	import { getGeneralsDoc } from '$lib/helpers/firebase';
-	import { logo } from '$lib/stores/logo';
+	import { logo } from '$lib/stores/cart';
 	import { onMount } from 'svelte';
 
 	let generals = {};

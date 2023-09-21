@@ -1,30 +1,10 @@
 <script>
 	// @ts-nocheck
-	import NavBar from '$lib/components/navbar.svelte';
-	import Footer from '$lib/components/footer.svelte';
-	import { getGeneralsDoc } from '$lib/helpers/firebase';
-	import { onMount } from 'svelte';
-
-	import { logo } from '../../../lib/stores/logo';
-
-	let generals = {};
-	async function fetchData() {
-		try {
-			await getGeneralsDoc().then((doc) => {
-				generals = { ...doc.data(), id: doc.id };
-				logo.set(generals.imagen);
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	}
-
-	onMount(async () => {
-		await fetchData();
-		console.log(generals);
-	});
-
-	$: uploadedImage = generals?.imagen ?? '';
+	import { generals } from '$lib/stores/generals';
+	$: logoSRC = $generals['imagen'];
+	$: quienes_somos = $generals['quienes_somos'] ?? '';
+	$: nuestra_mision = $generals['nuestra_mision'] ?? '';
+	$: nuestra_vision = $generals['nuestra_vision'] ?? '';
 </script>
 
 <svelte:head>
@@ -33,20 +13,17 @@
 </svelte:head>
 
 <div class="client_acerca_content">
-	<NavBar />
-
 	<div class="acerca_content">
 		<div>
 			<div class="img_content">
-				<img class="img contain_img" src={uploadedImage} alt="logo comilonga" />
+				<img class="img contain_img" src={logoSRC} alt="logo comilonga" />
 			</div>
-
 		</div>
 		<div class="hero-content text-center text-neutral-content">
 			<div class="max-w-md">
 				<h1 class="mb-5 text-5xl font-bold">ACERCA DE NOSOTROS</h1>
 				<p class="mb-5">
-					{generals?.quienes_somos ?? ''}
+					{quienes_somos}
 				</p>
 			</div>
 		</div>
@@ -54,7 +31,7 @@
 			<div class="max-w-md">
 				<h1 class="mb-5 text-5xl font-bold">NUESTRA MISION</h1>
 				<p class="mb-5">
-					{generals?.nuestra_mision ?? ''}
+					{nuestra_mision}
 				</p>
 			</div>
 		</div>
@@ -62,14 +39,10 @@
 			<div class="max-w-md">
 				<h1 class="mb-5 text-5xl font-bold">NUESTRA VISION</h1>
 				<p class="mb-5">
-					{generals?.nuestra_vision ?? ''}
+					{nuestra_vision}
 				</p>
 			</div>
 		</div>
-	</div>
-
-	<div class="footer_div">
-		<Footer />
 	</div>
 </div>
 

@@ -10,7 +10,7 @@ export const getFileDownloadURL = async (path = '') => {
 
 export const getGeneralsDoc = async () => {
 	const docs = await getDocs(query(collection(db, 'generales')));
-	let current_doc;
+	let current_doc = {};
 	docs.forEach((doc) => {
 		current_doc = doc;
 	});
