@@ -42,7 +42,7 @@
 					<span class="text-info">Subtotal: L. {total}</span>
 					<div class="card-actions">
 						<a href="/cliente/carrito">
-							<button class="btn btn-primary btn-block"> View cart </button>
+							<button class="btn btn-primary btn-block"> Ver Carrito </button>
 						</a>
 					</div>
 				</div>
