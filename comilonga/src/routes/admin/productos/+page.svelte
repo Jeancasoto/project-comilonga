@@ -28,6 +28,21 @@
 	});
 </script>
 
+<div class="global-container">
+
+<h1 class="text-3xl font-bold text-center my-5">Tus productos</h1>
+<div class="boton-crear-prod">
+	<button
+		class="btn btn-success"
+		on:click={() => {
+			shouldShowModal = true;
+			modalType = 'CREATE';
+		}}
+	>
+		Crear Producto
+	</button>
+</div>
+
 <div class="flex justify-center flex-col">
 	<div class="modal" class:modal-open={shouldShowModal}>
 		<div class="modal-box">
@@ -74,18 +89,8 @@
 			{/if}
 		</div>
 	</div>
-	<div class="flex justify-end w-full self-center mb-4">
-		<button
-			class="btn btn-success"
-			on:click={() => {
-				shouldShowModal = true;
-				modalType = 'CREATE';
-			}}
-		>
-			Crear Producto
-		</button>
-	</div>
-	<div class="overflow-x-auto w-full flex justify-center">
+
+	<div class="w-full flex justify-center">
 		<table class="table w-3/4">
 			<!-- head -->
 			<thead>
@@ -142,3 +147,24 @@
 		</table>
 	</div>
 </div>
+</div>
+
+<style>
+	.global-container{
+		display: flex;
+		flex-direction: column;
+		
+		align-items: center;
+		justify-content: center;
+		
+	}
+	.boton-crear-prod{
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+
+		margin: 10px 50px;
+
+		width: 80vw;
+	}
+</style>

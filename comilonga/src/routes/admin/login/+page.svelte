@@ -1,11 +1,19 @@
 <script>
+	//@ts-nocheck
+
 	import { auth } from '$lib/firebase';
 	import { auth as AuthStore } from '$lib/stores/auth';
+
+	import { generals } from '$lib/stores/generals';
 	import { extractErrors } from '$lib/helpers/general';
 	import { signInWithEmailAndPassword } from 'firebase/auth';
 	import { onMount } from 'svelte';
+
 	import * as yup from 'yup';
 	import { goto } from '$app/navigation';
+
+	$: logoSRC = $generals['imagen'];
+
 	onMount(() => {
 		return AuthStore.subscribe((user) => {
 			if (user !== null) {
@@ -36,14 +44,17 @@
 	}
 </script>
 
-<div class="w-full flex justify-center bg-base-content">
-	<div class="relative flex flex-col justify-center h-screen overflow-hidden">
-		<div class="w-full p-6 m-auto rounded-md shadow-md lg:max-w-lg bg-base-100">
-			<h1 class="text-3xl font-semibold text-center text-purple-700">Comilonga</h1>
+<div class="login-container">
+	<div class="card card-compact w-96 bg-base-100 shadow-xl">
+		<div class="card-body">
+			<div class="login-img">
+				<img src={logoSRC} alt="Logo la comilonga" class="w-40 object-scale-down" />
+			</div>
+
 			<form class="space-y-4" on:submit|preventDefault={onSubmit}>
 				<div>
 					<label class="label" for="email">
-						<span class="text-base label-text">Email</span>
+						<span class="text-base label-text">Correo</span>
 					</label>
 					<input
 						name="email"
@@ -59,7 +70,7 @@
 				</div>
 				<div>
 					<label class="label" for="pass">
-						<span class="text-base label-text">Password</span>
+						<span class="text-base label-text">Contraseña</span>
 					</label>
 					<input
 						name="pass"
@@ -74,10 +85,31 @@
 					{/if}
 				</div>
 				<div class="flex justify-center flex-col items-center">
-					<button class="btn btn-primary" type="submit">Login</button>
+					<button class="btn btn-primary" type="submit">Acceder</button>
 					<a class="link-secondary" href="/admin/forgot-password">Olvide mi contraseña</a>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+
+<style>
+
+	.login-container {
+		display: flex;
+
+		justify-content: center;
+		align-items: center;
+
+		width: 100vw;
+		height: 100vh;
+
+		background-color: #eeeafc;
+	}
+
+	.login-img {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+</style>
