@@ -1,119 +1,175 @@
 <script>
+	// @ts-nocheck
+	import { whatsappMessageTemplate } from '$lib/helpers/general';
+	import { generals } from '$lib/stores/generals';
 	import { cart, removeItem } from '$lib/stores/cart';
-	$: total = $cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+	import { goto } from '$app/navigation';
+	import { extractErrors } from '$lib/helpers/general';
+	import * as yup from 'yup';
+	import 'iconify-icon';
 
-	async function onSubmit(e) {}
+	let cliente = { nombre: '', numero: '', notasCocina: '' };
+
+	$: total = $cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+	$: redes_sociales = $generals['redes_sociales'] ?? {};
+	$: numero = '50497042422';
+
+	let errors = {};
+	const schema = yup.object().shape({
+		nombre: yup.string().required('Por favor ingresar un nombre').ensure(),
+		numero: yup.string().required('Por favor ingresar un numero').ensure(),
+		notas: yup.string()
+	});
+
+	async function onSubmit(e) {
+		try {
+			const formData = new FormData(e.target);
+			const data = Object.fromEntries(formData);
+			await schema.validate(data, { abortEarly: false });
+			console.log(data);
+			goto(
+				`https://wa.me/${numero}?text=${whatsappMessageTemplate(
+					data.nombre,
+					data.numero,
+					data?.notasCocina ?? '',
+					$cart
+				)}`
+			);
+		} catch (error) {
+			if (error instanceof yup.ValidationError) {
+				errors = extractErrors(error);
+			}
+		}
+	}
 </script>
 
-<div class="container mx-auto">
-	<h1 class="text-3xl font-bold text-center my-5">Tu carrito</h1>
-	<div class="flex justify-end my-5">
+<div class="container mx-auto flex flex-col lg:flex-row">
+	<div class="flex flex-col items-start w-3/4">
+		<h1 class="text-3xl font-bold text-center my-5">Tu carrito</h1>
 
-	</div>
-
-	{#if $cart.length > 0}
-		<div class="cards_container">
-			{#each $cart as item, idx}
-				<div class="card card-compact w-96 bg-base-100 shadow-xl">
-					<figure>
-						<img class="img contain_img" src={item.image} alt={item.title} />
-					</figure>
-					<div class="card-body">
-						<h2 class="card-title">
-							{item.title}
-						</h2>
-						<div class="modificar-cantidad">
-							<h3>Cantidad: {item.quantity}</h3>
-							<div class="join grid grid-cols-2">
-								<button class="btn btn-xs btn-circle btn-outline btn-error">-</button>
-								<button class="btn btn-xs btn-circle btn-outline btn-success">+</button>
+		{#if $cart.length > 0}
+			<div class="flex flex-col gap-4 w-full lg:w-3/4 p-4">
+				{#each $cart as item, idx}
+					<div class="flex flex-row p-4 md:flex-wrap-none flex-wrap">
+						<div class="flex flex-col gap-2 mr-20">
+							<h2 class="text-xl capitalize text-wrap">{item.title}</h2>
+							<div class="btn-group">
+								<button
+									class="btn btn-secondary btn-sm"
+									type="button"
+									on:click={() => {
+										if (item.quantity > 1) {
+											item.quantity--;
+										} else {
+											removeItem(idx);
+										}
+									}}
+								>
+									{#if item.quantity == 1}
+										<iconify-icon icon="mdi:trash" />
+									{:else}
+										<iconify-icon icon="mdi:minus" />
+									{/if}
+								</button>
+								<div class="btn btn-secondary btn-sm hover:bg-secondary hover:cursor-default">
+									{item.quantity}
+								</div>
+								<button
+									class="btn btn-secondary btn-sm"
+									type="button"
+									on:click={() => {
+										item.quantity++;
+									}}
+								>
+									<iconify-icon icon="mdi:plus" />
+								</button>
 							</div>
 						</div>
-						<p>Precio por porción: L. {item.price.toFixed(2)}</p>
-						<div class="badge badge-warning badge-outline">
-							Subtotal: L. {(item.price * item.quantity).toFixed(2)}
+						<div class="flex flex-col">
+							<p class="text-gray-600">Descripcion: {item.description ?? ''}</p>
+							<br />
+							<p class="text-gray-600">Notas: {item.notes ?? ''}</p>
 						</div>
-						<div class="divider" />
-						<h3>Agregar notas a la orden:</h3>
-						<textarea
-							name="notas{item.idx}"
-							class="textarea textarea-bordered textarea-sm"
-							placeholder="Ejemplo: Aderezos por aparte ..."
-						/>
+						<div class="flex flex-row justify-end gap-2 w-full">
+							<h2 class="text-2xl">L. {(item.price * item.quantity).toFixed(2)}</h2>
+						</div>
 					</div>
-				</div>
-			{/each}
-		</div>
-		<div class="seccion-datos-cliente">
-			<div class="card card-compact w-full bg-base-100 shadow-xl">
-				<div class="card-body">
-					<div class="card-display">
-						<div>
-							<h1 class="text-3xl font-bold text-center my-5">Mis datos de cliente</h1>
-							<form on:submit|preventDefault={onSubmit}>
-								<label class="label">
-									<span class="label-text">Nombre y apellido del cliente</span>
+				{/each}
+			</div>
+		{:else}
+			<p class="text-center">Tu carrito está vacío</p>
+		{/if}
+	</div>
+	<div class="w-full lg:w-1/4">
+		<div class="card card-compact w-full bg-base-100 shadow-xl">
+			<div class="card-body">
+				<div class="card-display">
+					<div>
+						<h1 class="text-3xl font-bold text-center my-5">Mis datos de cliente</h1>
+						<form on:submit|preventDefault={onSubmit}>
+							<label class="label" for="nombre">
+								<span class="label-text">Nombre y apellido del cliente</span>
+							</label>
+							<input
+								name="nombre"
+								type="text"
+								placeholder="Luis Sanchez"
+								class="input input-bordered w-full max-w-xs"
+								on:input={(e) => {
+									cliente.nombre = e.target.value;
+								}}
+							/>
+							{#if errors.nombre}
+								<label class="label" for="nombre">
+									<span class="label-text-alt text-red-500">{errors.nombre}</span>
 								</label>
-								<input
-									type="text"
-									placeholder="Luis Sanchez"
-									class="input input-bordered w-full max-w-xs"
-								/>
-								<label class="label">
-									<span class="label-text">Numero alternativo de contacto</span>
+							{/if}
+							<label class="label" for="numero">
+								<span class="label-text">Numero alternativo de contacto</span>
+							</label>
+							<input
+								name="numero"
+								type="text"
+								placeholder="9754-3346"
+								class="input input-bordered w-full max-w-xs"
+								on:input={(e) => {
+									cliente.numero = e.target.value;
+								}}
+							/>
+							{#if errors.numero}
+								<label class="label" for="numero">
+									<span class="label-text-alt text-red-500">{errors.numero}</span>
 								</label>
-								<input
-									type="text"
-									placeholder="9754-3346"
-									class="input input-bordered w-full max-w-xs"
-								/>
+							{/if}
+							<div class="divider" />
 
-								<div class="divider" />
-
-								<label class="label">
-									<span class="label-text">Notas para la cocina</span>
-								</label>
-								<textarea
-									name="notas"
-									class="textarea textarea-bordered textarea-sm w-full"
-									placeholder="Ejemplo: Todos los productos empacados por aparte"
-								/>
-							</form>
-
-						</div>
-						<div class="divider lg:divider-horizontal" /> 
-
-						<div>
-							<h1 class="text-3xl font-bold text-center my-5">Resumen de mi pedido</h1>
-								{#each $cart as item, idx}
-								<p>
-									{item.quantity} x {item.title}
-								</p>
-								<p>
-									Nota: 
-								</p>
-								<!-- Aqui deberiamos agregar una validacion en un if 
-								para validar si el producto tiene nota, se le ponga, de lo contrario
-								no tiene sentido mostrar la nota vacia -->
-								{/each}
-
-								<div class="divider" />
-
+							<label class="label" for="notas">
+								<span class="label-text">Notas para la cocina</span>
+							</label>
+							<textarea
+								name="notas"
+								class="textarea textarea-bordered textarea-sm w-full"
+								placeholder="Ejemplo: Todos los productos empacados por aparte"
+								on:input={(e) => {
+									cliente.notasCocina = e.target.value;
+								}}
+							/>
+							<div class="divider w-full" />
+							<div>
 								<p>
 									Total: <span class="font-bold">L. {total}</span>
 								</p>
-							<button type="submit" class="btn btn-success">
-								<iconify-icon icon="mdi:whatsapp" class="text-2xl" />
-								{'Enviar a cocina'}
-							</button>
-						</div>
+								<button type="submit" class="btn btn-success">
+									<iconify-icon icon="mdi:whatsapp" class="text-2xl" />
+									{'Enviar a cocina'}
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-	{:else}
-		<p class="text-center">Tu carrito está vacío</p>
-	{/if}
+	</div>
 </div>
 
 <style>
@@ -148,10 +204,7 @@
 	.card-display {
 		display: flex;
 		flex-direction: row;
-
 		justify-content: space-evenly;
-
 		flex-wrap: wrap;
-
 	}
 </style>
