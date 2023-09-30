@@ -83,6 +83,19 @@
 
 <!-- Fin codigo del modal -->
 
+
+<h1 class="text-3xl font-bold text-center my-5">Tus productos</h1>
+<div class="boton-crear-prod">
+	<button
+		class="btn btn-success"
+		on:click={() => {
+			shouldShowModal = true;
+			modalType = 'CREATE';
+		}}
+	>
+		Crear Producto
+	</button>
+</div>
 <div class="global-container">
 	<div class="inner_container">
 		<table class="table w-full">
@@ -160,11 +173,11 @@
 	.boton-crear-prod {
 		display: flex;
 		flex-direction: row;
-		justify-content: flex-end;
+		justify-content: center;
+		align-items: center;
 
 		margin: 10px 50px;
 
-		width: 80vw;
 	}
 
 	.table_desc{
