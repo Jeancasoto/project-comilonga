@@ -281,7 +281,7 @@
 <style>
 	.form_container {
 		max-height: inherit;
-		padding: 5% 10%;
+		padding: 2% 10%;
 	}
 
 	.logo_container {
@@ -293,6 +293,5 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 10% 0%;
 	}
 </style>

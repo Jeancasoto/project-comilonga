@@ -28,20 +28,8 @@
 	});
 </script>
 
-<div class="global-container">
+<!-- Inicio codigo del modal -->
 
-<h1 class="text-3xl font-bold text-center my-5">Tus productos</h1>
-<div class="boton-crear-prod">
-	<button
-		class="btn btn-success"
-		on:click={() => {
-			shouldShowModal = true;
-			modalType = 'CREATE';
-		}}
-	>
-		Crear Producto
-	</button>
-</div>
 
 <div class="flex justify-center flex-col">
 	<div class="modal" class:modal-open={shouldShowModal}>
@@ -52,7 +40,9 @@
 					on:success={async () => {
 						shouldShowModal = false;
 						await fetchProducts();
-						toast.success(`Producto ${modalType === 'EDIT' ? 'editado' : 'creado'} exitosamente`);
+						toast.success(
+							`Producto ${modalType === 'EDIT' ? 'editado' : 'creado'} exitosamente`
+						);
 					}}
 					on:cancel={() => {
 						shouldShowModal = false;
@@ -89,14 +79,16 @@
 			{/if}
 		</div>
 	</div>
+</div>
 
-	<div class="w-full flex justify-center">
-		<table class="table w-3/4">
-			<!-- head -->
+<!-- Fin codigo del modal -->
+
+<div class="global-container">
+	<div class="inner_container">
+		<table class="table w-full">
 			<thead>
 				<tr>
 					<th>Producto</th>
-					<th>Descripcion</th>
 					<th>Acciones</th>
 				</tr>
 			</thead>
@@ -116,9 +108,8 @@
 								</div>
 							</div>
 						</td>
-						<td>
-							{producto.descripcion || '-'}
-						</td>
+						
+
 						<th>
 							<button
 								class="btn btn-warning"
@@ -147,18 +138,26 @@
 		</table>
 	</div>
 </div>
-</div>
 
 <style>
-	.global-container{
+	.global-container {
 		display: flex;
-		flex-direction: column;
-		
+
 		align-items: center;
 		justify-content: center;
+
+		width: 100vw;
+		height: 100%;
+
+	}
+
+	.inner_container {
+
+		width: 50%;
+		height: 50%;
 		
 	}
-	.boton-crear-prod{
+	.boton-crear-prod {
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-end;
@@ -166,5 +165,9 @@
 		margin: 10px 50px;
 
 		width: 80vw;
+	}
+
+	.table_desc{
+		overflow: hidden;
 	}
 </style>
