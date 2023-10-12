@@ -12,7 +12,11 @@
 
 	$: total = $cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 	$: redes_sociales = $generals['redes_sociales'] ?? {};
-	$: numero = '50497042422';
+
+	// $: numero = "97042422";
+	$: numero = redes_sociales['whatsapp_link'];
+
+	console.log(numero);
 
 	let errors = {};
 	const schema = yup.object().shape({
@@ -28,7 +32,7 @@
 			await schema.validate(data, { abortEarly: false });
 			console.log(data);
 			goto(
-				`https://wa.me/${numero}?text=${whatsappMessageTemplate(
+				`https://wa.me/504${numero}?text=${whatsappMessageTemplate(
 					data.nombre,
 					data.numero,
 					data?.notasCocina ?? '',

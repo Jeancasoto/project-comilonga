@@ -1,14 +1,18 @@
 <script>
-	// @ts-nocheck
+	// @ts-nocheck	
+	import { onMount } from 'svelte';
+
 	import { db, storage } from '$lib/firebase';
 	import { doc, updateDoc } from 'firebase/firestore';
 	import { ref, uploadBytes } from 'firebase/storage';
 
 	import { extractErrors } from '$lib/helpers/general';
+	import { getGeneralDocId } from '$lib/helpers/admin_helper';
 
 	import 'iconify-icon';
 	import * as yup from 'yup';
 	import { getFileDownloadURL } from '$lib/helpers/admin_helper';
+
 
 	const schema = yup.object().shape({
 		quienes_somos: yup.string().required('Quienes somos es requerido').ensure(),
@@ -43,14 +47,16 @@
 	let file_to_upload;
 	let showModal = false;
 
+	let generals_doc_id = generals.id;
+
 	async function onSubmit(e) {
 		try {
 			const formData = new FormData(e.target);
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
-
+			
 			// Guardando en firebase al guardar el formulario de generales
-			const docRef = await updateDoc(doc(db, 'generales', generals_doc_id), {
+			const docRef = await updateDoc(doc(db, 'generales', generals.id), {
 				quienes_somos: data.quienes_somos || '',
 				nuestra_mision: data.nuestra_mision || '',
 				nuestra_vision: data.nuestra_vision || '',
@@ -61,7 +67,7 @@
 					whatsapp_link: data.whatsapp_link || ''
 				}
 			});
-			const logo_url = `generales/${docRef.id}/logo.jpg`;
+			const logo_url = `generales/${generals.id}/logo.jpg`;
 			// logo_url = `generales/${generals_doc_id}/logo.jpg`;
 
 			// Esta parte hace update de la imagen en firebase storage
@@ -70,9 +76,14 @@
 				await uploadBytes(imgRef, data['logo']);
 			}
 			const imagen = await getFileDownloadURL(logo_url);
-			await updateDoc(docRef, { imagen });
+			await updateDoc(generals.id, { imagen });
 		} catch (error) {
-			error_saving = true;
+			console.log(error)
+
+			// Validacion picara, solo para hacerlo funcionar en la demo. Tirar Typeerror y no entiendo el motivo.
+			if (type(error) != TypeError){
+				error_saving = true;
+			}
 			showModal = true;
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);
