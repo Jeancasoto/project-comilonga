@@ -116,8 +116,8 @@
 			{#each categories as category}
 				<button
 					type="button"
-					class="btn md:btn-md btn-sm flex-shrink-0 rounded-full"
-					class:opacity-50={category.id === selectedCategory}
+					class="btn md:btn-md btn-sm btn-secondary flex-shrink-0 rounded-full"
+					class:bg-primary={category.id === selectedCategory}
 					on:click={() => {
 						if (selectedCategory === category.id) {
 							selectedCategory = '';
