@@ -5,9 +5,9 @@
 		collectionGroup,
 		deleteDoc,
 		doc,
-		getDoc,
 		getDocs,
-		onSnapshot,
+		where,
+		query,
 		updateDoc
 	} from 'firebase/firestore';
 	import { getFileDownloadURL } from '$lib/helpers/firebase';
@@ -18,6 +18,7 @@
 	import { auth } from '$lib/firebase';
 	import { goto } from '$app/navigation';
 	let products = [];
+	let categories = [];
 	let selectedProduct = {};
 	let shouldShowModal = false;
 	let modalType = '';
@@ -34,11 +35,18 @@
 		);
 	}
 
+	async function fetchCategories() {
+		const collectionRef = query(collectionGroup(db, 'categorias'), where('is_visible', '==', true));
+		const querySnap = await getDocs(collectionRef);
+		categories = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+	}
+
 	onMount(async () => {
 		if (auth.currentUser === null) {
 			goto('/admin/login');
 		}
 		await fetchProducts();
+		await fetchCategories();
 	});
 </script>
 
@@ -50,6 +58,7 @@
 			{#if modalType === 'CREATE' || modalType === 'EDIT'}
 				<FormularioProductos
 					producto={modalType === 'EDIT' ? selectedProduct : undefined}
+					categorias={categories}
 					on:success={async () => {
 						shouldShowModal = false;
 						await fetchProducts();
@@ -146,10 +155,9 @@
 							<button
 								class="btn btn-info"
 								on:click={() => {
-									console.log('producto', producto);
 									const docRef = doc(db, 'productos', producto.id);
 									updateDoc(docRef, { is_visible: !producto.is_visible });
-									producto.is_visible = !producto.is_visible 
+									producto.is_visible = !producto.is_visible;
 								}}
 							>
 								<iconify-icon icon={producto.is_visible ? 'mdi:eye' : 'mdi:eye-off'} />

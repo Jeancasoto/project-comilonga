@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 
-	import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+	import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	import { getFileDownloadURL } from '$lib/helpers/firebase';
 	import * as yup from 'yup';
@@ -38,9 +38,9 @@
 				dispatch('success', info);
 			} else {
 				const collectionRef = collection(db, 'categorias');
-				const doc = await addDoc(collectionRef, { ...data });
-				const info = await updateDoc(doc, { imagen: imagePath });
-				dispatch('success', info);
+				const docRef = await addDoc(collectionRef, { ...data, is_visible: true });
+				const doc = await getDoc(docRef);
+				dispatch('success', { id: doc.id, ...doc.data() });
 			}
 			uploadedImage = '';
 			e.target.reset();

@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { db } from '$lib/firebase';
-	import { collectionGroup, deleteDoc, doc, getDocs } from 'firebase/firestore';
+	import { collectionGroup, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
@@ -15,9 +15,12 @@
 
 	async function fetchCategorias() {
 		const collectionRef = collectionGroup(db, 'categorias');
+		console.log('wenas');
 		const querySnap = await getDocs(collectionRef);
 		categories = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+		console.log(categories);
 	}
+
 	onMount(async () => {
 		if (auth.currentUser === null) {
 			goto('/admin/login');
@@ -35,9 +38,10 @@
 				<FormularioCategorias
 					categoria={modalType === 'EDIT' ? selectedCategory : undefined}
 					on:success={async () => {
+						console.log('success');
 						shouldShowModal = false;
 						await fetchCategorias();
-						toast.success(`Producto ${modalType === 'EDIT' ? 'editado' : 'creado'} exitosamente`);
+						toast.success(`Categoria ${modalType === 'EDIT' ? 'editada' : 'creada'} exitosamente`);
 					}}
 					on:cancel={() => {
 						shouldShowModal = false;
@@ -60,13 +64,13 @@
 						class="btn btn-error"
 						on:click={async () => {
 							try {
-								const docRef = doc(db, 'productos', selectedCategory.id);
+								const docRef = doc(db, 'categorias', selectedCategory.id);
 								await deleteDoc(docRef);
-								toast.success('Producto eliminado exitosamente');
-								shouldShowModal = false;
 								await fetchCategorias();
+								shouldShowModal = false;
+								toast.success('Categoria eliminada exitosamente');
 							} catch (error) {
-								toast.error('Hubo un error al eliminar el producto');
+								toast.error('Hubo un error al eliminar la categoria');
 							}
 						}}>Eliminar</button
 					>
@@ -124,7 +128,9 @@
 							<button
 								class="btn btn-info"
 								on:click={() => {
-									console.log('producto', producto);
+									const docRef = doc(db, 'categorias', producto.id);
+									updateDoc(docRef, { is_visible: !producto.is_visible });
+									producto.is_visible = !producto.is_visible;
 								}}
 							>
 								<iconify-icon icon={producto.is_visible ? 'mdi:eye' : 'mdi:eye-off'} />

@@ -111,30 +111,6 @@
 		</div>
 	</div>
 	<div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 grid-flow-row gap-2 lg:gap-4">
-		<!-- {#each products as producto}
-			<div class="card card-compact w-96 bg-base-100 shadow-xl justify-self-center">
-				<figure>
-					<img class="img contain_img" src={producto.imageSRC} alt={producto.nombre} />
-				</figure>
-				<div class="card-body">
-					<h2 class="card-title">
-						{producto.nombre}
-						<div class="badge badge-accent badge-outline">L. {producto.precio}</div>
-					</h2>
-					<p>{producto.descripcion}</p>
-					<button
-						type="button"
-						class="card-actions justify-end"
-						on:click={() => {
-							selectedProduct = { ...producto, quantity: 1 };
-							shouldShowModal = true;
-						}}
-					>
-						<button class="btn btn-primary">Agregar al carrito</button>
-					</button>
-				</div>
-			</div>
-		{/each} -->
 		{#each products as producto}
 			<div
 				class="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md justify-self-center"

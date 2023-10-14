@@ -10,6 +10,7 @@
 	import { extractErrors } from '$lib/helpers/general';
 
 	export let producto;
+	export let categorias;
 	let uploadedImage = '';
 	let errors = {};
 
@@ -32,6 +33,7 @@
 			.transform((value) => parseFloat(value))
 			.positive('El precio debe ser una cifra positiva')
 			.required('Por favor ingresar un precio'),
+		categoria: yup.string().required('Por favor seleccionar una categoria').ensure(),
 		imagen: yup
 			.mixed()
 			.notRequired()
@@ -66,7 +68,7 @@
 				dispatch('success', info);
 			} else {
 				const collectionRef = collection(db, 'productos');
-				const doc = await addDoc(collectionRef, { ...data, imagen: '' });
+				const doc = await addDoc(collectionRef, { ...data, is_visible: true, imagen: '' });
 
 				const imagePath = `productos/${doc.id}/imagen.jpg`;
 				const imgRef = ref(storage, imagePath);
@@ -150,6 +152,23 @@
 			{#if errors.descripcion}
 				<label class="label" for="descripcion">
 					<span class="label-text-alt text-red-500">{errors.descripcion}</span>
+				</label>
+			{/if}
+		</div>
+
+		<div class="form-control w-full max-w-xs">
+			<label class="label" for="categoria">
+				<span class="label-text font-bold">Categoria del producto</span>
+			</label>
+			<select name="categoria" class="select w-full max-w-xs" value={producto?.categoria}>
+				<option disabled selected={producto?.categoria}>Categoria del producto</option>
+				{#each categorias as categoria}
+					<option value={categoria.id}>{categoria.nombre}</option>
+				{/each}
+			</select>
+			{#if errors.categoria}
+				<label class="label" for="imagen">
+					<span class="label-text-alt text-red-500">{errors.categoria}</span>
 				</label>
 			{/if}
 		</div>
