@@ -7,8 +7,10 @@
 	import { extractErrors } from '$lib/helpers/general';
 	import * as yup from 'yup';
 	import 'iconify-icon';
+	import { addDoc, collection } from 'firebase/firestore';
+	import { db } from '$lib/firebase';
 
-	let cliente = { nombre: '', numero: '', notasCocina: '' };
+	let cliente = { nombre: '', numero: '', notasCocina: '', tipoDePedido: 'local' };
 
 	$: total = $cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 	$: redes_sociales = $generals['redes_sociales'] ?? {};
@@ -22,6 +24,9 @@
 	const schema = yup.object().shape({
 		nombre: yup.string().required('Por favor ingresar un nombre').ensure(),
 		numero: yup.string().required('Por favor ingresar un numero').ensure(),
+		tipoDePedido: yup.string().test('isAnOption', (item) => {
+			return ['llevar', 'local'].includes(item);
+		}),
 		notas: yup.string()
 	});
 
@@ -30,12 +35,14 @@
 			const formData = new FormData(e.target);
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
-			console.log(data);
+			const collectionRef = collection(db, 'mensajes_enviados');
+			await addDoc(collectionRef, { ...data });
 			goto(
 				`https://wa.me/504${numero}?text=${whatsappMessageTemplate(
 					data.nombre,
 					data.numero,
 					data?.notasCocina ?? '',
+					data.tipoDePedido,
 					$cart
 				)}`
 			);
@@ -145,6 +152,33 @@
 									<span class="label-text-alt text-red-500">{errors.numero}</span>
 								</label>
 							{/if}
+							<div class="flex flex-col">
+								<label class="label" for="retiro">
+									<span class="label-text">¿Como desea su pedido?</span>
+								</label>
+								<div class="join">
+									<input
+										class="join-item btn"
+										type="radio"
+										name="options"
+										aria-label="Para el local"
+										on:click={() => {
+											cliente.tipoDePedido == 'local';
+										}}
+										checked={cliente.tipoDePedido === 'local'}
+									/>
+									<input
+										class="join-item btn"
+										type="radio"
+										name="options"
+										aria-label="Para llevar"
+										on:click={() => {
+											cliente.tipoDePedido == 'llevar';
+										}}
+										checked={cliente.tipoDePedido === 'llevar'}
+									/>
+								</div>
+							</div>
 							<div class="divider" />
 
 							<label class="label" for="notas">
@@ -177,32 +211,9 @@
 </div>
 
 <style>
-	.cards_container {
-		display: flex;
-		justify-content: space-around;
-		flex-wrap: wrap;
-	}
-	.modificar-cantidad {
-		display: flex;
-		flex-direction: row;
-	}
-	.img {
-		max-height: 120px;
-		max-width: 220px;
-	}
-
-	.contain_img {
-		object-fit: scale-down;
-	}
-
 	.card {
 		margin: 10px 0px;
 		padding: 10px 0px;
-	}
-
-	.seccion-datos-cliente {
-		display: flex;
-		justify-content: center;
 	}
 
 	.card-display {
