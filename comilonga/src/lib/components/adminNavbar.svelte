@@ -18,33 +18,31 @@
 	});
 </script>
 
-<div class="navbar bg-base-100">
+<div class="navbar bg-base-100 w-screen overflow-scroll">
 	<div class="rounded-full">
 		<a href="/acerca">
 			<img src={logoSRC} alt="Logo la comilonga" class="w-20 object-scale-down" />
 		</a>
 	</div>
 	{#if isLoggedIn}
-		<div class="global_menu_container">
-			<div class="options_container">
-				<a
-					class="btn btn-outline btn-secondary"
-					href="/admin"
-					class:active={$page.url.pathname === '/admin'}>Generales</a
-				>
-				<div class="divider divider-horizontal" />
-				<a
-					class="btn btn-outline btn-primary"
-					href="/admin/productos"
-					class:active={$page.url.pathname === '/admin/productos'}>Productos</a
-				>
-				<div class="divider divider-horizontal" />
-				<a
-					class="btn btn-outline btn-primary"
-					href="/admin/categorias"
-					class:active={$page.url.pathname === '/admin/categorias'}>Categorias</a
-				>
-			</div>
+		<div class="flex flex-row">
+			<a
+				class="btn btn-sm btn-secondary"
+				href="/admin"
+				class:active={$page.url.pathname === '/admin'}>Generales</a
+			>
+			<div class="divider divider-horizontal" />
+			<a
+				class="btn btn-sm btn-primary"
+				href="/admin/productos"
+				class:active={$page.url.pathname === '/admin/productos'}>Productos</a
+			>
+			<div class="divider divider-horizontal" />
+			<a
+				class="btn btn-sm btn-primary"
+				href="/admin/categorias"
+				class:active={$page.url.pathname === '/admin/categorias'}>Categorias</a
+			>
 		</div>
 		<div class="signout_button">
 			<button
@@ -69,7 +67,6 @@
 
 	.global_menu_container {
 		display: flex;
-		width: 100%;
 
 		height: 50%;
 

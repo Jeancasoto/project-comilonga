@@ -83,7 +83,7 @@
 <!-- Fin codigo del modal -->
 
 <h1 class="text-3xl font-bold text-center my-5">Tus Categorias</h1>
-<div class="boton-crear-prod">
+<div class="flex justify-center items-center mb-4">
 	<button
 		class="btn btn-success"
 		on:click={() => {
@@ -94,8 +94,8 @@
 		Crear Categoria
 	</button>
 </div>
-<div class="global-container">
-	<div class="inner_container">
+<div >
+	<div class="overflow-x-scroll">
 		<table class="table w-full">
 			<thead>
 				<tr>

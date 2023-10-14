@@ -104,7 +104,7 @@
 <!-- Fin codigo del modal -->
 
 <h1 class="text-3xl font-bold text-center my-5">Tus productos</h1>
-<div class="boton-crear-prod">
+<div class="flex justify-center items-center mb-4">
 	<button
 		class="btn btn-success"
 		on:click={() => {
@@ -115,8 +115,8 @@
 		Crear Producto
 	</button>
 </div>
-<div class="global-container">
-	<div class="inner_container">
+<div>
+	<div class="overflow-x-scroll">
 		<table class="table w-full">
 			<thead>
 				<tr>
@@ -181,29 +181,6 @@
 </div>
 
 <style>
-	.global-container {
-		display: flex;
-
-		align-items: center;
-		justify-content: center;
-
-		width: 100vw;
-		height: 100%;
-	}
-
-	.inner_container {
-		width: 50%;
-		height: 50%;
-	}
-	.boton-crear-prod {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-
-		margin: 10px 50px;
-	}
-
 	.table_desc {
 		overflow: hidden;
 	}
