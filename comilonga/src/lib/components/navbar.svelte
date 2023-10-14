@@ -9,16 +9,16 @@
 
 <div class="navbar bg-base-100">
 	<div class="rounded-full">
-		<a href="/cliente/acerca">
+		<a href="/">
 			<img src={logoSRC} alt="Logo la comilonga" class="w-20 object-scale-down" />
 		</a>
 	</div>
 	<div class="flex-1 ml-4">
-		<a class="font-bold normal-case text-xl" href="/cliente/">Menu</a>
+		<a class="font-bold normal-case text-xl" href="/acerca">Acerca de Nosotros</a>
 	</div>
 	<div class="flex-none">
 		<div class="dropdown dropdown-end">
-			<a href="/cliente/carrito">
+			<a href="/carrito">
 				<button class="btn btn-ghost btn-circle" type="button">
 					<div class="indicator">
 						<svg

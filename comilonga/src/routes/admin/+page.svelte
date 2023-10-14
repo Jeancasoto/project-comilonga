@@ -3,19 +3,23 @@
 	import FormularioGenerales from '$lib/components/formularios/FormularioGenerales.svelte';
 	import { getGeneralsDoc } from '$lib/helpers/firebase';
 	import { onMount } from 'svelte';
+	import { auth } from '$lib/firebase';
+	import { goto } from '$app/navigation';
 
 	let generals = {};
 	async function fetchData() {
 		try {
-			await getGeneralsDoc().then((doc) => {
-				generals = { ...doc.data(), id: doc.id };
-			});
+			const doc = await getGeneralsDoc();
+			generals = doc;
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
 	onMount(async () => {
+		if (auth.currentUser === null) {
+			goto('/admin/login');
+		}
 		await fetchData();
 	});
 </script>

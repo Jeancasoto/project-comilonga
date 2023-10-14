@@ -1,44 +1,28 @@
 <script>
 	// @ts-nocheck
 	import { db } from '$lib/firebase';
-	import {
-		collectionGroup,
-		deleteDoc,
-		doc,
-		getDoc,
-		getDocs,
-		onSnapshot,
-		updateDoc
-	} from 'firebase/firestore';
-	import { getFileDownloadURL } from '$lib/helpers/firebase';
+	import { collectionGroup, deleteDoc, doc, getDocs } from 'firebase/firestore';
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
-	import FormularioProductos from '$lib/components/formularios/FormularioProductos.svelte';
 	import toast from 'svelte-french-toast';
 	import { auth } from '$lib/firebase';
 	import { goto } from '$app/navigation';
-	let products = [];
-	let selectedProduct = {};
+	import FormularioCategorias from '$lib/components/formularios/FormularioCategorias.svelte';
+	let categories = [];
+	let selectedCategory = {};
 	let shouldShowModal = false;
 	let modalType = '';
 
-	async function fetchProducts() {
-		const collectionRef = collectionGroup(db, 'productos');
+	async function fetchCategorias() {
+		const collectionRef = collectionGroup(db, 'categorias');
 		const querySnap = await getDocs(collectionRef);
-		const productsDocs = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-		products = await Promise.all(
-			productsDocs.map(async (product) => {
-				const url = await getFileDownloadURL(product.imagen);
-				return { ...product, imageSRC: url };
-			})
-		);
+		categories = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 	}
-
 	onMount(async () => {
 		if (auth.currentUser === null) {
 			goto('/admin/login');
 		}
-		await fetchProducts();
+		await fetchCategorias();
 	});
 </script>
 
@@ -48,11 +32,11 @@
 	<div class="modal" class:modal-open={shouldShowModal}>
 		<div class="modal-box">
 			{#if modalType === 'CREATE' || modalType === 'EDIT'}
-				<FormularioProductos
-					producto={modalType === 'EDIT' ? selectedProduct : undefined}
+				<FormularioCategorias
+					categoria={modalType === 'EDIT' ? selectedCategory : undefined}
 					on:success={async () => {
 						shouldShowModal = false;
-						await fetchProducts();
+						await fetchCategorias();
 						toast.success(`Producto ${modalType === 'EDIT' ? 'editado' : 'creado'} exitosamente`);
 					}}
 					on:cancel={() => {
@@ -60,7 +44,7 @@
 					}}
 				/>
 			{:else if modalType === 'DELETE'}
-				<h3 class="font-bold text-lg">¿Seguro deseas eleminar {selectedProduct.nombre}?</h3>
+				<h3 class="font-bold text-lg">¿Seguro deseas eleminar {selectedCategory.nombre}?</h3>
 				<p class="py-4">haz click en aceptar para eliminar el producto</p>
 				<div class="modal-action">
 					<button
@@ -76,11 +60,11 @@
 						class="btn btn-error"
 						on:click={async () => {
 							try {
-								const docRef = doc(db, 'productos', selectedProduct.id);
+								const docRef = doc(db, 'productos', selectedCategory.id);
 								await deleteDoc(docRef);
 								toast.success('Producto eliminado exitosamente');
 								shouldShowModal = false;
-								await fetchProducts();
+								await fetchCategorias();
 							} catch (error) {
 								toast.error('Hubo un error al eliminar el producto');
 							}
@@ -94,7 +78,7 @@
 
 <!-- Fin codigo del modal -->
 
-<h1 class="text-3xl font-bold text-center my-5">Tus productos</h1>
+<h1 class="text-3xl font-bold text-center my-5">Tus Categorias</h1>
 <div class="boton-crear-prod">
 	<button
 		class="btn btn-success"
@@ -103,7 +87,7 @@
 			modalType = 'CREATE';
 		}}
 	>
-		Crear Producto
+		Crear Categoria
 	</button>
 </div>
 <div class="global-container">
@@ -111,23 +95,17 @@
 		<table class="table w-full">
 			<thead>
 				<tr>
-					<th>Producto</th>
+					<th>Categoria</th>
 					<th>Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
-				{#each products as producto}
+				{#each categories as producto}
 					<tr>
 						<td>
 							<div class="flex items-center space-x-3">
-								<div class="avatar">
-									<div class="mask mask-squircle w-20 h-20">
-										<img src={producto.imageSRC} alt={producto.nombre} />
-									</div>
-								</div>
 								<div>
 									<div class="text-2xl font-bold">{producto.nombre}</div>
-									<div class="text-lg opacity-50">L {producto.precio}</div>
 								</div>
 							</div>
 						</td>
@@ -137,7 +115,7 @@
 								class="btn btn-warning"
 								on:click={() => {
 									modalType = 'EDIT';
-									selectedProduct = producto;
+									selectedCategory = producto;
 									shouldShowModal = true;
 								}}
 							>
@@ -147,9 +125,6 @@
 								class="btn btn-info"
 								on:click={() => {
 									console.log('producto', producto);
-									const docRef = doc(db, 'productos', producto.id);
-									updateDoc(docRef, { is_visible: !producto.is_visible });
-									producto.is_visible = !producto.is_visible 
 								}}
 							>
 								<iconify-icon icon={producto.is_visible ? 'mdi:eye' : 'mdi:eye-off'} />
@@ -158,7 +133,7 @@
 								class="btn btn-error"
 								on:click={() => {
 									modalType = 'DELETE';
-									selectedProduct = producto;
+									selectedCategory = producto;
 									shouldShowModal = true;
 								}}
 							>

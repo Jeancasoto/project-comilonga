@@ -1,26 +1,23 @@
 <script>
 	//@ts-nocheck
-
 	import { auth } from '$lib/firebase';
-	import { auth as AuthStore } from '$lib/stores/auth';
-
+	import { goto } from '$app/navigation';
 	import { generals } from '$lib/stores/generals';
 	import { extractErrors } from '$lib/helpers/general';
 	import { signInWithEmailAndPassword } from 'firebase/auth';
 	import { onMount } from 'svelte';
-
 	import * as yup from 'yup';
-	import { goto } from '$app/navigation';
 
 	$: logoSRC = $generals['imagen'];
 
 	onMount(() => {
-		return AuthStore.subscribe((user) => {
+		return auth.onAuthStateChanged((user) => {
 			if (user !== null) {
 				goto('/admin');
 			}
 		});
 	});
+
 	let errors = {};
 	const schema = yup.object().shape({
 		email: yup
@@ -30,6 +27,7 @@
 			.ensure(),
 		pass: yup.string().required('Por favor ingrese su contraseña').ensure()
 	});
+
 	async function onSubmit(e) {
 		try {
 			const formData = new FormData(e.target);
@@ -94,7 +92,6 @@
 </div>
 
 <style>
-
 	.login-container {
 		display: flex;
 

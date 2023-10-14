@@ -1,43 +1,48 @@
 <script>
 	// @ts-nocheck
-	import { onAuthStateChanged, signOut } from 'firebase/auth';
+	import { signOut } from 'firebase/auth';
 	import { auth } from '$lib/firebase';
-	import { auth as authStore } from '$lib/stores/auth';
-	import { onMount } from 'svelte';
 	import { generals } from '$lib/stores/generals';
+	import { onMount } from 'svelte';
 
 	import 'iconify-icon';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
-	onMount(() => {
-		onAuthStateChanged(auth, authStore.set);
-	});
-
 	$: logoSRC = $generals['imagen'];
+	let isLoggedIn = false;
+	onMount(() => {
+		return auth.onAuthStateChanged((user) => {
+			isLoggedIn = user !== null;
+		});
+	});
 </script>
 
-{#if $authStore !== null}
-	<div class="navbar bg-base-100">
-		<!-- <div class="rounded-full">
-			<a href="/cliente/acerca">
-				<img src={logoSRC} alt="Logo la comilonga" class="w-20 object-scale-down" />
-			</a>
-		</div> -->
-		<div class="flex-1 ml-4">
-			<h2 class="font-bold normal-case text-xl">Admin La Comilonga</h2>
-		</div>
-
+<div class="navbar bg-base-100">
+	<div class="rounded-full">
+		<a href="/acerca">
+			<img src={logoSRC} alt="Logo la comilonga" class="w-20 object-scale-down" />
+		</a>
+	</div>
+	{#if isLoggedIn}
 		<div class="global_menu_container">
 			<div class="options_container">
-				<a class="btn btn-outline btn-secondary" href="/admin" class:active={$page.url.pathname === '/admin'}
-					>Generales</a
+				<a
+					class="btn btn-outline btn-secondary"
+					href="/admin"
+					class:active={$page.url.pathname === '/admin'}>Generales</a
 				>
 				<div class="divider divider-horizontal" />
 				<a
 					class="btn btn-outline btn-primary"
 					href="/admin/productos"
 					class:active={$page.url.pathname === '/admin/productos'}>Productos</a
+				>
+				<div class="divider divider-horizontal" />
+				<a
+					class="btn btn-outline btn-primary"
+					href="/admin/categorias"
+					class:active={$page.url.pathname === '/admin/categorias'}>Categorias</a
 				>
 			</div>
 		</div>
@@ -52,10 +57,8 @@
 				<iconify-icon icon="mdi:logout" /></button
 			>
 		</div>
-	</div>
-{:else}
-	<slot />
-{/if}
+	{/if}
+</div>
 
 <style>
 	.navbar {
