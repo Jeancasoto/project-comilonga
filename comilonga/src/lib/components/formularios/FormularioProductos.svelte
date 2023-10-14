@@ -160,12 +160,15 @@
 			<label class="label" for="categoria">
 				<span class="label-text font-bold">Categoria del producto</span>
 			</label>
-			<select name="categoria" class="select w-full max-w-xs" value={producto?.categoria}>
-				<option disabled selected={producto?.categoria}>Categoria del producto</option>
+			<select name="categoria" class="select w-full max-w-xs">
+				<option disabled selected={!producto?.categoria}>Categoria del producto</option>
 				{#each categorias as categoria}
-					<option value={categoria.id}>{categoria.nombre}</option>
+					<option value={categoria.id} selected={producto?.categoria === categoria.id}
+						>{categoria.nombre}</option
+					>
 				{/each}
 			</select>
+
 			{#if errors.categoria}
 				<label class="label" for="imagen">
 					<span class="label-text-alt text-red-500">{errors.categoria}</span>

@@ -11,6 +11,7 @@
 	let categories = [];
 	let shouldShowModal = false;
 	let selectedProduct = {};
+	let selectedCategory = '';
 
 	async function fetchProducts() {
 		const collectionRef = query(collectionGroup(db, 'productos'), where('is_visible', '==', true));
@@ -110,47 +111,56 @@
 			</form>
 		</div>
 	</div>
-	<div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 grid-flow-row gap-2 lg:gap-4">
-		{#each products as producto}
-			<div
-				class="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md justify-self-center"
-			>
-				<a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
-					<img class="object-cover w-full" src={producto.imageSRC} alt={producto.nombre} />
-				</a>
-				<div class="mt-4 px-5 pb-5">
-					<a href="#">
-						<h5
-							class="text-3xl tracking-tight text-slate-900 whitespace-break break-keep capitalize"
-						>
-							{producto.nombre}
-						</h5>
-					</a>
+	<div class="w-full">
+		<div class="flex overflow-x-auto space-x-8 pt-2 pb-2">
+			{#each categories as category}
+				<button
+					type="button"
+					class="btn md:btn-md btn-sm flex-shrink-0 rounded-full"
+					class:opacity-50={category.id === selectedCategory}
+					on:click={() => {
+						if (selectedCategory === category.id) {
+							selectedCategory = '';
+						} else {
+							selectedCategory = category.id;
+						}
+					}}
+				>
+					<span>{category.nombre}</span>
+				</button>
+			{/each}
+		</div>
+		<!-- component -->
+		<div class="flex flex-col justify-end items-start space-y-4">
+			{#each products as producto}
+				{#if selectedCategory === '' || producto.categoria === selectedCategory}
 					<div
-						class="mt-2 mb-5 flex flex-col items-start justify-center text-truncate overflow-hidden"
-					>
-						<p>
-							<span class="text-xl font-bold text-slate-900">L {producto.precio}</span>
-						</p>
-						<p class="text-sm font-italic text-grey-900 max-lines">
-							{producto.descripcion}
-						</p>
-					</div>
-
-					<button
-						type="button"
-						class="btn btn-secondary w-full"
-						on:click={() => {
+						class="flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 border border-white bg-white w-full cursor-pointer"
+						role="button"
+						tabindex="0"
+						on:keypress={(e) => {}}
+						on:click={(e) => {
+							e.stopPropagation();
 							selectedProduct = { ...producto, quantity: 1 };
 							shouldShowModal = true;
 						}}
 					>
-						<iconify-icon icon="mdi:cart" class="mr-4" />
-						Agregar al carrito
-					</button>
-				</div>
-			</div>
-		{/each}
+						<div class="bg-white grid place-items-center">
+							<img src={producto.imageSRC} alt="tailwind logo" class="rounded-xl h-40 w-40" />
+						</div>
+						<div class="w-full md:w-2/3 bg-white flex flex-col space-y-2 p-3">
+							<h3 class="font-black text-gray-800 md:text-3xl text-xl">
+								{producto.nombre}
+							</h3>
+							<p class="md:text-lg text-gray-500 text-base">
+								{producto.descripcion}
+							</p>
+							<p class="text-xl font-black text-gray-800">L {producto.precio}</p>
+						</div>
+					</div>
+				{/if}
+			{/each}
+		</div>
 	</div>
 </div>
 
