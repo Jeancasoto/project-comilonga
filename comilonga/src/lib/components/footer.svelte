@@ -12,7 +12,7 @@
 	};
 	$: facebookURL = redes_sociales['facebook_link'];
 	$: instagramURL = redes_sociales['instagram_link'];
-	$: whatsappURL = redes_sociales['whatsapp_link'];
+	$: whatsappNumber = redes_sociales['whatsapp_link'];
 	$: email = redes_sociales['email'];
 </script>
 
@@ -34,7 +34,7 @@
 					<a href={instagramURL} class="w-fit">
 						<iconify-icon icon="mdi:instagram" class="text-2xl" />
 					</a>
-					<a href={whatsappURL} class="w-fit">
+					<a href={`https://wa.me/504${whatsappNumber}`} class="w-fit">
 						<iconify-icon icon="mdi:whatsapp" class="text-2xl" />
 					</a>
 					<a href={`mailto:${email}`} class="w-fit">

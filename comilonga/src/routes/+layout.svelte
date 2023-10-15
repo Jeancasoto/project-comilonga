@@ -28,11 +28,15 @@
 	<Toaster />
 	<main>
 		{#if $page.url.pathname.startsWith('/admin')}
-			<AdminNavbar />
+			{#if !$page.url.pathname.startsWith('/admin/login')}
+				<AdminNavbar />
+			{/if}
 		{:else}
 			<Navbar />
 		{/if}
 		<slot />
-		<Footer />
+		{#if !$page.url.pathname.startsWith('/admin/login')}
+			<Footer />
+		{/if}
 	</main>
 </div>

@@ -21,6 +21,7 @@
 		facebook_link: yup.string().required('Link de Facebook es requerido').ensure(),
 		instagram_link: yup.string().required('Link de Instagram es requerido').ensure(),
 		whatsapp_link: yup.string().required('Numero de Whatsapp es requerido').ensure(),
+		email_link: yup.string().required('El correo es requerido').ensure(),
 
 		logo: yup
 			.mixed()
@@ -64,7 +65,8 @@
 				redes_sociales: {
 					facebook_link: data.facebook_link || '',
 					instagram_link: data.instagram_link || '',
-					whatsapp_link: data.whatsapp_link || ''
+					whatsapp_link: data.whatsapp_link || '',
+					email_link: data.email_link || ''
 				}
 			});
 			const logo_url = `generales/${generals.id}/logo.jpg`;
@@ -241,7 +243,7 @@
 				</label>
 				<label class="input-group">
 					<span class="">
-						<iconify-icon icon="mdi:favorite" class="text-2xl" />
+						<iconify-icon icon="mdi:instagram" class="text-2xl" />
 					</span>
 					<input
 						value={generals?.redes_sociales?.instagram_link ?? ''}
@@ -265,7 +267,7 @@
 				</label>
 				<label class="input-group">
 					<span class="">
-						<iconify-icon icon="mdi:message" class="text-2xl" />
+						<iconify-icon icon="mdi:whatsapp" class="text-2xl" />
 					</span>
 					<input
 						value={generals?.redes_sociales?.whatsapp_link ?? ''}
@@ -278,6 +280,30 @@
 				{#if errors.whatsapp_link}
 					<label class="label" for="whatsapp_link">
 						<span class="label-text-alt text-red-500">{errors.whatsapp_link}</span>
+					</label>
+				{/if}
+			</div>
+
+			<!-- eMAIL  -->
+			<div class="form-control">
+				<label for="email_link" class="label">
+					<span class="label-text">e-Mail</span>
+				</label>
+				<label class="input-group">
+					<span class="">
+						<iconify-icon icon="mdi:email" class="text-2xl" />
+					</span>
+					<input
+						value={generals?.redes_sociales?.email_link ?? ''}
+						name="email_link"
+						type="text"
+						placeholder="Correo electronico"
+						class="input input-bordered"
+					/>
+				</label>
+				{#if errors.whatsapp_link}
+					<label class="label" for="email_link">
+						<span class="label-text-alt text-red-500">{errors.email_link}</span>
 					</label>
 				{/if}
 			</div>

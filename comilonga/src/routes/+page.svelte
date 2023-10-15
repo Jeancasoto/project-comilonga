@@ -69,6 +69,7 @@
 						description: selectedProduct.descripcion
 					});
 					toast.success(`${selectedProduct.nombre} agregado exitosamente`);
+					selectedProduct = {};
 				}}
 			>
 				<label class="label" for="notas">
@@ -76,6 +77,7 @@
 				</label>
 				<textarea
 					name="notas"
+					value = {selectedProduct.notes??''}
 					class="textarea textarea-bordered textarea-sm resize-none w-full"
 					placeholder="Ejemplo: Aderezos por aparte ..."
 					on:input={(e) => {

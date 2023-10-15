@@ -94,63 +94,52 @@
 		Crear Categoria
 	</button>
 </div>
-<div >
-	<div class="overflow-x-scroll">
-		<table class="table w-full">
-			<thead>
-				<tr>
-					<th>Categoria</th>
-					<th>Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each categories as producto}
-					<tr>
-						<td>
-							<div class="flex items-center space-x-3">
-								<div>
-									<div class="text-2xl font-bold">{producto.nombre}</div>
-								</div>
-							</div>
-						</td>
+<div class="flex flex-col justify-center items-center w-full">
+	<div>
+	{#each categories as producto}
 
-						<th>
-							<button
-								class="btn btn-warning"
-								on:click={() => {
-									modalType = 'EDIT';
-									selectedCategory = producto;
-									shouldShowModal = true;
-								}}
-							>
-								<iconify-icon icon="mdi:edit" />
-							</button>
-							<button
-								class="btn btn-info"
-								on:click={() => {
-									const docRef = doc(db, 'categorias', producto.id);
-									updateDoc(docRef, { is_visible: !producto.is_visible });
-									producto.is_visible = !producto.is_visible;
-								}}
-							>
-								<iconify-icon icon={producto.is_visible ? 'mdi:eye' : 'mdi:eye-off'} />
-							</button>
-							<button
-								class="btn btn-error"
-								on:click={() => {
-									modalType = 'DELETE';
-									selectedCategory = producto;
-									shouldShowModal = true;
-								}}
-							>
-								<iconify-icon icon="mdi:trash" />
-							</button>
-						</th>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
+		<div class="flex w-full">
+			<div class="grid p-5 h-20 text-wrap text-2xl justify-start font-bold break-all w-full flex-grow card  rounded-box place-items-center">
+					{producto.nombre}
+			</div>
+
+			
+			<div class="flex flex-row text-wrap h-20 w-full flex-grow card rounded-box place-items-center">
+				<button
+					class="btn btn-warning"
+					on:click={() => {
+						modalType = 'EDIT';
+						selectedCategory = producto;
+						shouldShowModal = true;
+					}}
+				>
+					<iconify-icon icon="mdi:edit" />
+				</button>
+				<button
+					class="btn btn-info"
+					on:click={() => {
+						const docRef = doc(db, 'categorias', producto.id);
+						updateDoc(docRef, { is_visible: !producto.is_visible });
+						producto.is_visible = !producto.is_visible;
+					}}
+				>
+					<iconify-icon icon={producto.is_visible ? 'mdi:eye' : 'mdi:eye-off'} />
+				</button>
+				<button
+					class="btn btn-error"
+					on:click={() => {
+						modalType = 'DELETE';
+						selectedCategory = producto;
+						shouldShowModal = true;
+					}}
+				>
+					<iconify-icon icon="mdi:trash" />
+				</button>
+			</div>
+		</div>
+	{/each}
+</div>
+
 </div>
 
 <style>

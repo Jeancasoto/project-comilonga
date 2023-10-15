@@ -10,7 +10,7 @@
 	import { addDoc, collection } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 
-	let cliente = { nombre: '', numero: '', notasCocina: '', tipoDePedido: 'local' };
+	let cliente = { nombre: '', numero: '', notasCocina: '', tipoDePedido: 'local' , tipoDePago: 'efectivo'};
 
 	$: total = $cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 	$: redes_sociales = $generals['redes_sociales'] ?? {};
@@ -18,15 +18,10 @@
 	// $: numero = "97042422";
 	$: numero = redes_sociales['whatsapp_link'];
 
-	console.log(numero);
-
 	let errors = {};
 	const schema = yup.object().shape({
 		nombre: yup.string().required('Por favor ingresar un nombre').ensure(),
 		numero: yup.string().required('Por favor ingresar un numero').ensure(),
-		tipoDePedido: yup.string().test('isAnOption', (item) => {
-			return ['llevar', 'local'].includes(item);
-		}),
 		notas: yup.string()
 	});
 
@@ -43,12 +38,14 @@
 					data.numero,
 					data?.notasCocina ?? '',
 					data.tipoDePedido,
+					data.tipoDePago,
 					$cart
 				)}`
 			);
 		} catch (error) {
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);
+				console.log(errors)
 			}
 		}
 	}
@@ -160,7 +157,7 @@
 									<input
 										class="join-item btn"
 										type="radio"
-										name="options"
+										name="tipo_options"
 										aria-label="Para el local"
 										on:click={() => {
 											cliente.tipoDePedido == 'local';
@@ -170,12 +167,39 @@
 									<input
 										class="join-item btn"
 										type="radio"
-										name="options"
+										name="tipo_options"
 										aria-label="Para llevar"
 										on:click={() => {
 											cliente.tipoDePedido == 'llevar';
 										}}
 										checked={cliente.tipoDePedido === 'llevar'}
+									/>
+								</div>
+							</div>
+							<div class="flex flex-col">
+								<label class="label" for="pago">
+									<span class="label-text">¿Pagará en efectivo o Tarjeta?</span>
+								</label>
+								<div class="join">
+									<input
+										class="join-item btn"
+										type="radio"
+										name="pago_options"
+										aria-label="Efectivo"
+										on:click={() => {
+											cliente.tipoDePago == 'efectivo';
+										}}
+										checked={cliente.tipoDePago === 'efectivo'}
+									/>
+									<input
+										class="join-item btn"
+										type="radio"
+										name="pago_options"
+										aria-label="Tarjeta"
+										on:click={() => {
+											cliente.tipoDePago == 'tarjeta';
+										}}
+										checked={cliente.tipoDePago === 'tarjeta'}
 									/>
 								</div>
 							</div>
@@ -197,10 +221,13 @@
 								<p>
 									Total: <span class="font-bold">L. {total}</span>
 								</p>
+								{#if $cart.length > 0}
+								
 								<button type="submit" class="btn btn-success">
 									<iconify-icon icon="mdi:whatsapp" class="text-2xl" />
 									{'Enviar a cocina'}
 								</button>
+								{/if}
 							</div>
 						</form>
 					</div>

@@ -11,12 +11,13 @@ function buildProductBlock(products) {
 		})
 		.join('');
 }
-export function whatsappMessageTemplate(nombre, numero, notas, tipoDePedido, products) {
+export function whatsappMessageTemplate(nombre, numero, notas, tipoDePedido, tipoDePago, products) {
 	return encodeURIComponent(
 		`Hola Me llamo ${nombre}.\nPueden contactarme al ${numero}.\n\nQuisiera Ordenar ${
 			tipoDePedido === 'llevar' ? 'para llevar' : 'para comer en el local'
 		}:\n${buildProductBlock(products)}${
 			notas ? `Notas a la cocina: ${notas}.\n` : '\n'
-		}Muchas Gracias.`
+		}\nPagare con ${tipoDePago === 'efectivo' ? 'efectivo' : 'tarjeta'}\n
+		Muchas Gracias.`
 	);
 }
