@@ -12,6 +12,7 @@
 	let shouldShowModal = false;
 	let selectedProduct = {};
 	let selectedCategory = '';
+	let selectedCategoryName = '';
 
 	async function fetchProducts() {
 		const collectionRef = query(collectionGroup(db, 'productos'), where('is_visible', '==', true));
@@ -77,7 +78,7 @@
 				</label>
 				<textarea
 					name="notas"
-					value = {selectedProduct.notes??''}
+					value={selectedProduct.notes ?? ''}
 					class="textarea textarea-bordered textarea-sm resize-none w-full"
 					placeholder="Ejemplo: Aderezos por aparte ..."
 					on:input={(e) => {
@@ -113,6 +114,7 @@
 			</form>
 		</div>
 	</div>
+	<div class="menu_items_container">
 	<div class="w-full">
 		<div class="flex overflow-x-auto space-x-8 pt-2 pb-2">
 			{#each categories as category}
@@ -121,8 +123,10 @@
 					class="btn md:btn-md btn-sm btn-secondary flex-shrink-0 rounded-full"
 					class:bg-primary={category.id === selectedCategory}
 					on:click={() => {
+						selectedCategoryName = category.nombre;
 						if (selectedCategory === category.id) {
 							selectedCategory = '';
+							selectedCategoryName = '';
 						} else {
 							selectedCategory = category.id;
 						}
@@ -132,32 +136,48 @@
 				</button>
 			{/each}
 		</div>
-		<!-- component -->
-		<div class="flex flex-col justify-end items-start space-y-4">
+		<div class="flex justify-center p-5 font-bold text-3xl">
+			{#if selectedCategoryName === ''}
+				<h1>Todo nuestro menú</h1>
+			{/if}
+
+			<h1>{selectedCategoryName}</h1>
+		</div>
+		<!-- componente que renderiza el menu -->
 			{#each products as producto}
 				{#if selectedCategory === '' || producto.categoria === selectedCategory}
 					<div
-						class="flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 border border-white bg-white w-full cursor-pointer"
+						class="w-full flex flex-col m-2 md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 border border-white bg-white w-full cursor-pointer"
 						role="button"
 						tabindex="0"
-						on:keypress={(e) => {}}
-						on:click={(e) => {
-							e.stopPropagation();
-							selectedProduct = { ...producto, quantity: 1 };
-							shouldShowModal = true;
-						}}
 					>
 						<div class="bg-white grid place-items-center">
 							<img src={producto.imageSRC} alt="tailwind logo" class="rounded-xl h-40 w-40" />
 						</div>
 						<div class="w-full md:w-2/3 bg-white flex flex-col space-y-2 p-3">
-							<h3 class="font-black text-gray-800 md:text-3xl text-xl">
+							<h3 class="font-black text-gray-800 md:text-xl text-xl">
 								{producto.nombre}
 							</h3>
 							<p class="md:text-lg text-gray-500 text-base">
 								{producto.descripcion}
 							</p>
-							<p class="text-xl font-black text-gray-800">L {producto.precio}</p>
+							<p class="text-xl text-gray-500 font-black text-gray-800">L.{producto.precio}</p>
+						</div>
+
+						<div class="cart_button">
+							<button 
+							class="btn btn-primary"
+							on:keypress={(e) => {}}
+							on:click={(e) => {
+								e.stopPropagation();
+								selectedProduct = { ...producto, quantity: 1 };
+								shouldShowModal = true;
+							}}
+							>
+								Agregar
+								<iconify-icon icon="mdi:cart" class="text-2xl" />
+								</button
+							>
 						</div>
 					</div>
 				{/if}
@@ -182,5 +202,53 @@
 		overflow: hidden;
 		max-height: 3.6em;
 		line-height: 1.8em;
+	}
+
+	.menu_items_container {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		padding: 5px 35px;
+
+	}
+
+	.menu_items {
+		display: flex;
+		flex-direction: row;
+		margin: 5px 35px;
+
+		background-color: rgb(255, 0, 204);
+	}
+
+	.cards_container {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+
+		width: 100%;
+
+		background-color: blue;
+	}
+	.card {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		align-items: center;
+		justify-content: center;
+
+		margin: 10px 0px;
+		padding: 10px 0px;
+	}
+
+	.cart_button{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		justify-self: flex-end;
+
 	}
 </style>

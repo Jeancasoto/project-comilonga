@@ -17,7 +17,7 @@ export function whatsappMessageTemplate(nombre, numero, notas, tipoDePedido, tip
 			tipoDePedido === 'llevar' ? 'para llevar' : 'para comer en el local'
 		}:\n${buildProductBlock(products)}${
 			notas ? `Notas a la cocina: ${notas}.\n` : '\n'
-		}\nPagare con ${tipoDePago === 'efectivo' ? 'efectivo' : 'tarjeta'}\n
+		}\nPagare con ${tipoDePago === 'efectivo' ? 'efectivo' : 'tarjeta'}
 		Muchas Gracias.`
 	);
 }

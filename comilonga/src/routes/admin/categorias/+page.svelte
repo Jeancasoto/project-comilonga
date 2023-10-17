@@ -82,7 +82,7 @@
 
 <!-- Fin codigo del modal -->
 
-<h1 class="text-3xl font-bold text-center my-5">Tus Categorias</h1>
+<h1 class="text-3xl font-bold text-center my-5">Tus Categorías</h1>
 <div class="flex justify-center items-center mb-4">
 	<button
 		class="btn btn-success"
@@ -91,14 +91,14 @@
 			modalType = 'CREATE';
 		}}
 	>
-		Crear Categoria
+		Crear Categoría
 	</button>
 </div>
 <div class="flex flex-col justify-center items-center w-full">
 	<div>
 	{#each categories as producto}
 
-		<div class="flex w-full">
+		<div class="flex w-full categories">
 			<div class="grid p-5 h-20 text-wrap text-2xl justify-start font-bold break-all w-full flex-grow card  rounded-box place-items-center">
 					{producto.nombre}
 			</div>
@@ -143,6 +143,13 @@
 </div>
 
 <style>
+
+	.categories{
+		display: flex;
+		margin: 10px 0px;
+
+		overflow: hidden;
+	}
 	.global-container {
 		display: flex;
 

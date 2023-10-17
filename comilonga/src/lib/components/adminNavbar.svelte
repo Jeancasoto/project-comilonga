@@ -26,7 +26,7 @@
 	<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 		<div class="w-full flex flex-col md:order-2">
 			<div class="flex flex-row justify-between items-center">
-				<a href="https://flowbite.com/" class="flex items-center">
+				<a href="/" class="flex items-center">
 					<img src={logoSRC} class="h-16 mr-3" alt="Comilonga Logo" />
 				</a>
 
