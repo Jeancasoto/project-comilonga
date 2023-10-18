@@ -19,6 +19,7 @@
 		"autoprefixer": "^10.4.2",
 		"chart.js": "^4.4.0",
 		"daisyui": "^3.9.2",
+		"dayjs": "^1.11.10",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
