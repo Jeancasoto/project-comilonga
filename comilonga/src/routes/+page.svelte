@@ -49,7 +49,7 @@
 							<iconify-icon icon="mdi:close" height={32} width={32} />
 						</button>
 					</div>
-					<h1 class="text-md text-gray-600 capitalize">{selectedProduct.descripcion}</h1>
+					<h1 class="text-md text-gray-600">{selectedProduct.descripcion}</h1>
 				</div>
 			</div>
 			<form on:submit|preventDefault={onSubmit}>
@@ -117,11 +117,7 @@
 				{/each}
 			</div>
 			<div class="flex justify-center p-5 font-bold text-3xl">
-				{#if selectedCategoryName === ''}
-					<h1>Todo nuestro menú</h1>
-				{/if}
-
-				<h1>{selectedCategoryName}</h1>
+				<h1>{`Menú${selectedCategory ? ':' : ''} ${selectedCategoryName}`}</h1>
 			</div>
 			<!-- componente que renderiza el menu -->
 			{#each products as producto}
