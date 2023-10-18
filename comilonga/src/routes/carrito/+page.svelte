@@ -10,13 +10,19 @@
 	import { addDoc, collection } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 
-	let cliente = { nombre: '', numero: '', notasCocina: '', tipoDePedido: 'local' , tipoDePago: 'efectivo'};
+	let cliente = {
+		nombre: '',
+		numero: '',
+		notasCocina: '',
+		tipoDePedido: 'local',
+		tipoDePago: 'efectivo'
+	};
 
 	$: total = $cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 	$: redes_sociales = $generals['redes_sociales'] ?? {};
 
-	// $: numero = "97042422";
-	$: numero = redes_sociales['whatsapp_link'];
+	$: numero = '97042422';
+	// $: numero = redes_sociales['whatsapp_link'];
 
 	let errors = {};
 	const schema = yup.object().shape({
@@ -24,28 +30,39 @@
 		numero: yup.string().required('Por favor ingresar un numero').ensure(),
 		notas: yup.string()
 	});
-
+	function purgeCart(item) {
+		return {
+			id: item.id,
+			quantity: item.quantity
+		};
+	}
 	async function onSubmit(e) {
 		try {
 			const formData = new FormData(e.target);
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
 			const collectionRef = collection(db, 'mensajes_enviados');
-			await addDoc(collectionRef, { ...data });
-			goto(
-				`https://wa.me/504${numero}?text=${whatsappMessageTemplate(
-					data.nombre,
-					data.numero,
-					data?.notasCocina ?? '',
-					data.tipoDePedido,
-					data.tipoDePago,
-					$cart
-				)}`
-			);
+			await addDoc(collectionRef, {
+				...data,
+				tipoDePago: cliente.tipoDePago,
+				tipoDePedido: cliente.tipoDePedido,
+				total,
+				items: $cart.map(purgeCart),
+				date: new Date().toISOString()
+			});
+			// goto(
+			// 	`https://wa.me/504${numero}?text=${whatsappMessageTemplate(
+			// 		data.nombre,
+			// 		data.numero,
+			// 		data?.notasCocina ?? '',
+			// 		cliente.tipoDePedido,
+			// 		cliente.tipoDePago,
+			// 		$cart
+			// 	)}`
+			// );
 		} catch (error) {
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);
-				console.log(errors)
 			}
 		}
 	}
@@ -157,7 +174,7 @@
 									<input
 										class="join-item btn"
 										type="radio"
-										name="tipo_options"
+										name="tipoDePedido"
 										aria-label="Para el local"
 										on:click={() => {
 											cliente.tipoDePedido == 'local';
@@ -167,7 +184,7 @@
 									<input
 										class="join-item btn"
 										type="radio"
-										name="tipo_options"
+										name="tipoDePedido"
 										aria-label="Para llevar"
 										on:click={() => {
 											cliente.tipoDePedido == 'llevar';
@@ -184,7 +201,7 @@
 									<input
 										class="join-item btn"
 										type="radio"
-										name="pago_options"
+										name="tipoDePago"
 										aria-label="Efectivo"
 										on:click={() => {
 											cliente.tipoDePago == 'efectivo';
@@ -194,7 +211,7 @@
 									<input
 										class="join-item btn"
 										type="radio"
-										name="pago_options"
+										name="tipoDePago"
 										aria-label="Tarjeta"
 										on:click={() => {
 											cliente.tipoDePago == 'tarjeta';
@@ -222,11 +239,10 @@
 									Total: <span class="font-bold">L. {total}</span>
 								</p>
 								{#if $cart.length > 0}
-								
-								<button type="submit" class="btn btn-success">
-									<iconify-icon icon="mdi:whatsapp" class="text-2xl" />
-									{'Enviar a cocina'}
-								</button>
+									<button type="submit" class="btn btn-success">
+										<iconify-icon icon="mdi:whatsapp" class="text-2xl" />
+										{'Enviar a cocina'}
+									</button>
 								{/if}
 							</div>
 						</form>

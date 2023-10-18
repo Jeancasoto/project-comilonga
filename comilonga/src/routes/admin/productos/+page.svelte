@@ -1,16 +1,8 @@
 <script>
 	// @ts-nocheck
 	import { db } from '$lib/firebase';
-	import {
-		collectionGroup,
-		deleteDoc,
-		doc,
-		getDocs,
-		where,
-		query,
-		updateDoc
-	} from 'firebase/firestore';
-	import { getFileDownloadURL } from '$lib/helpers/firebase';
+	import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+	import { fetchAllCategories } from '$lib/helpers/firebase';
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
 	import FormularioProductos from '$lib/components/formularios/FormularioProductos.svelte';
@@ -26,30 +18,12 @@
 	let selectedCategory = '';
 	let selectedCategoryName = '';
 
-	async function fetchProducts() {
-		const collectionRef = collectionGroup(db, 'productos');
-		const querySnap = await getDocs(collectionRef);
-		const productsDocs = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-		products = await Promise.all(
-			productsDocs.map(async (product) => {
-				const url = await getFileDownloadURL(product.imagen);
-				return { ...product, imageSRC: url };
-			})
-		);
-	}
-
-	async function fetchCategories() {
-		const collectionRef = query(collectionGroup(db, 'categorias'), where('is_visible', '==', true));
-		const querySnap = await getDocs(collectionRef);
-		categories = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-	}
-
 	onMount(async () => {
 		if (auth.currentUser === null) {
 			goto('/admin/login');
 		}
-		await fetchProducts();
-		await fetchCategories();
+		products = await fetchAllProducts();
+		categories = await fetchAllCategories();
 	});
 </script>
 
@@ -64,7 +38,7 @@
 					categorias={categories}
 					on:success={async () => {
 						shouldShowModal = false;
-						await fetchProducts();
+						products = await fetchAllProducts();
 						toast.success(`Producto ${modalType === 'EDIT' ? 'editado' : 'creado'} exitosamente`);
 					}}
 					on:cancel={() => {
@@ -92,7 +66,7 @@
 								await deleteDoc(docRef);
 								toast.success('Producto eliminado exitosamente');
 								shouldShowModal = false;
-								await fetchProducts();
+								products = await fetchAllProducts();
 							} catch (error) {
 								toast.error('Hubo un error al eliminar el producto');
 							}
@@ -121,7 +95,6 @@
 </div>
 
 <div class="menu_items_container">
-
 	<div class="flex overflow-x-auto space-x-8 pt-2 pb-2">
 		{#each categories as category}
 			<button
@@ -199,7 +172,6 @@
 		{/if}
 	{/each}
 </div>
-
 
 <style>
 	.item_info {

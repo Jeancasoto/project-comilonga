@@ -1,8 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { db } from '$lib/firebase';
-	import { collectionGroup, getDocs, where, query } from 'firebase/firestore';
-	import { getFileDownloadURL } from '$lib/helpers/firebase';
+	import { fetchVisibleCategories, fetchVisibleProducts } from '$lib/helpers/firebase';
 	import { onMount } from 'svelte';
 	import { addItem } from '$lib/stores/cart';
 	import toast from 'svelte-french-toast';
@@ -14,27 +12,9 @@
 	let selectedCategory = '';
 	let selectedCategoryName = '';
 
-	async function fetchProducts() {
-		const collectionRef = query(collectionGroup(db, 'productos'), where('is_visible', '==', true));
-		const querySnap = await getDocs(collectionRef);
-		const productsDocs = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-		products = await Promise.all(
-			productsDocs.map(async (product) => {
-				const url = await getFileDownloadURL(product.imagen);
-				return { ...product, imageSRC: url };
-			})
-		);
-	}
-
-	async function fetchCategories() {
-		const collectionRef = query(collectionGroup(db, 'categorias'), where('is_visible', '==', true));
-		const querySnap = await getDocs(collectionRef);
-		categories = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-	}
-
 	onMount(async () => {
-		await fetchProducts();
-		await fetchCategories();
+		products = await fetchVisibleProducts();
+		categories = await fetchVisibleCategories();
 	});
 </script>
 
@@ -115,35 +95,35 @@
 		</div>
 	</div>
 	<div class="menu_items_container">
-	<div class="w-full">
-		<div class="flex overflow-x-auto space-x-8 pt-2 pb-2">
-			{#each categories as category}
-				<button
-					type="button"
-					class="btn md:btn-md btn-sm btn-secondary flex-shrink-0 rounded-full"
-					class:bg-primary={category.id === selectedCategory}
-					on:click={() => {
-						selectedCategoryName = category.nombre;
-						if (selectedCategory === category.id) {
-							selectedCategory = '';
-							selectedCategoryName = '';
-						} else {
-							selectedCategory = category.id;
-						}
-					}}
-				>
-					<span>{category.nombre}</span>
-				</button>
-			{/each}
-		</div>
-		<div class="flex justify-center p-5 font-bold text-3xl">
-			{#if selectedCategoryName === ''}
-				<h1>Todo nuestro menú</h1>
-			{/if}
+		<div class="w-full">
+			<div class="flex overflow-x-auto space-x-8 pt-2 pb-2">
+				{#each categories as category}
+					<button
+						type="button"
+						class="btn md:btn-md btn-sm btn-secondary flex-shrink-0 rounded-full"
+						class:bg-primary={category.id === selectedCategory}
+						on:click={() => {
+							selectedCategoryName = category.nombre;
+							if (selectedCategory === category.id) {
+								selectedCategory = '';
+								selectedCategoryName = '';
+							} else {
+								selectedCategory = category.id;
+							}
+						}}
+					>
+						<span>{category.nombre}</span>
+					</button>
+				{/each}
+			</div>
+			<div class="flex justify-center p-5 font-bold text-3xl">
+				{#if selectedCategoryName === ''}
+					<h1>Todo nuestro menú</h1>
+				{/if}
 
-			<h1>{selectedCategoryName}</h1>
-		</div>
-		<!-- componente que renderiza el menu -->
+				<h1>{selectedCategoryName}</h1>
+			</div>
+			<!-- componente que renderiza el menu -->
 			{#each products as producto}
 				{#if selectedCategory === '' || producto.categoria === selectedCategory}
 					<div
@@ -165,19 +145,18 @@
 						</div>
 
 						<div class="cart_button">
-							<button 
-							class="btn btn-primary"
-							on:keypress={(e) => {}}
-							on:click={(e) => {
-								e.stopPropagation();
-								selectedProduct = { ...producto, quantity: 1 };
-								shouldShowModal = true;
-							}}
+							<button
+								class="btn btn-primary"
+								on:keypress={(e) => {}}
+								on:click={(e) => {
+									e.stopPropagation();
+									selectedProduct = { ...producto, quantity: 1 };
+									shouldShowModal = true;
+								}}
 							>
 								Agregar
 								<iconify-icon icon="mdi:cart" class="text-2xl" />
-								</button
-							>
+							</button>
 						</div>
 					</div>
 				{/if}
@@ -187,68 +166,20 @@
 </div>
 
 <style>
-	.img {
-		max-height: 120px;
-		max-width: 220px;
-	}
-
-	.contain_img {
-		object-fit: scale-down;
-	}
-	.max-lines {
-		display: block; /* or inline-block */
-		text-overflow: ellipsis;
-		word-wrap: break-word;
-		overflow: hidden;
-		max-height: 3.6em;
-		line-height: 1.8em;
-	}
-
 	.menu_items_container {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 
 		padding: 5px 35px;
-
 	}
 
-	.menu_items {
-		display: flex;
-		flex-direction: row;
-		margin: 5px 35px;
-
-		background-color: rgb(255, 0, 204);
-	}
-
-	.cards_container {
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-
-		width: 100%;
-
-		background-color: blue;
-	}
-	.card {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-
-		align-items: center;
-		justify-content: center;
-
-		margin: 10px 0px;
-		padding: 10px 0px;
-	}
-
-	.cart_button{
+	.cart_button {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 
 		justify-self: flex-end;
-
 	}
 </style>

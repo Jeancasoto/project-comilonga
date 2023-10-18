@@ -8,7 +8,6 @@
 	import 'iconify-icon';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { IconifyIconComponent } from 'iconify-icon';
 
 	$: logoSRC = $generals['imagen'];
 
@@ -31,19 +30,21 @@
 				</a>
 
 				<button
-				data-collapse-toggle="navbar-sticky"
-				type="button"
-				class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden"
-				aria-controls="navbar-sticky"
-				aria-expanded="false"
-				on:click={() => {
-					showCollapse = !showCollapse;
-				}}
-			> 
-			<iconify-icon  class = "text-4xl" icon={showCollapse? "mdi:chevron-up": "mdi:chevron-down"} />
-			<span class="sr-only">Open main menu</span>
-
-			</button>
+					data-collapse-toggle="navbar-sticky"
+					type="button"
+					class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden"
+					aria-controls="navbar-sticky"
+					aria-expanded="false"
+					on:click={() => {
+						showCollapse = !showCollapse;
+					}}
+				>
+					<iconify-icon
+						class="text-4xl"
+						icon={showCollapse ? 'mdi:chevron-up' : 'mdi:chevron-down'}
+					/>
+					<span class="sr-only">Open main menu</span>
+				</button>
 				<div
 					class="flex order-2 items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
 					id="navbar-sticky"
@@ -56,27 +57,41 @@
 								href="/admin/"
 								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
 								class:text-blue-700={$page.url.pathname === '/admin'}
-								aria-current="page">Generales</a
+								aria-current="page"
 							>
+								Generales
+							</a>
 						</li>
 						<li>
 							<a
 								href="/admin/productos"
 								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-								class:text-blue-700={$page.url.pathname === '/admin/productos'}>Productos</a
+								class:text-blue-700={$page.url.pathname === '/admin/productos'}
 							>
+								Productos
+							</a>
 						</li>
 						<li>
 							<a
 								href="/admin/categorias"
 								class:text-blue-700={$page.url.pathname === '/admin/categorias'}
 								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-								>Categorías</a
 							>
+								Categorías
+							</a>
+						</li>
+						<li>
+							<a
+								href="/admin/resumen"
+								class:text-blue-700={$page.url.pathname === '/admin/resumen'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
+							>
+								Resumen
+							</a>
 						</li>
 					</ul>
 				</div>
-				<div class = "flex order-3">
+				<div class="flex order-3">
 					<button
 						class="btn btn-secondary text-white"
 						on:click={async () => {
@@ -87,7 +102,6 @@
 						<iconify-icon class="text-white" icon="mdi:logout" />
 						Salir</button
 					>
-
 				</div>
 			</div>
 
@@ -99,7 +113,7 @@
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<ul
 							class="flex flex-col md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0"
-							on:click={()=>{
+							on:click={() => {
 								showCollapse = false;
 							}}
 						>
@@ -108,24 +122,41 @@
 									href="/admin/"
 									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
 									class:text-blue-700={$page.url.pathname === '/admin'}
-									aria-current="page">Generales</a
+									aria-current="page"
 								>
+									Generales
+								</a>
 							</li>
 							<li>
 								<a
 									href="/admin/productos"
 									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
 									class:text-blue-700={$page.url.pathname === '/admin/productos'}
-									aria-current="page">Productos</a
+									aria-current="page"
 								>
+									Productos
+								</a>
 							</li>
 							<li>
 								<a
 									href="/admin/categorias"
 									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
 									class:text-blue-700={$page.url.pathname === '/admin/categorias'}
-									aria-current="page">Categorías</a
+									aria-current="page"
 								>
+									Categorías
+								</a>
+							</li>
+
+							<li>
+								<a
+									href="/admin/resumen"
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
+									class:text-blue-700={$page.url.pathname === '/admin/resumen'}
+									aria-current="page"
+								>
+									Resumen
+								</a>
 							</li>
 						</ul>
 					</div>

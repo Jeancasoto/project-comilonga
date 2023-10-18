@@ -3,17 +3,13 @@
 	import { cart } from '$lib/stores/cart';
 	import { generals } from '$lib/stores/generals';
 	import { page } from '$app/stores';
-	
-	
+
 	$: amount = $cart.length;
 	$: total = $cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
 	$: logoSRC = $generals['imagen'];
 
-
 	let showCollapse = false;
-
 </script>
-
 
 <nav class="bg-white sticky z-10 w-full top-0 left-0">
 	<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -24,29 +20,31 @@
 				</a>
 
 				<button
-				data-collapse-toggle="navbar-sticky"
-				type="button"
-				class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden"
-				aria-controls="navbar-sticky"
-				aria-expanded="false"
-				on:click={() => {
-					showCollapse = !showCollapse;
-				}}
-			> 
-			{#if $page.url.pathname === '/acerca'}
-				Acerca de nosotros
-			{/if}
-			{#if $page.url.pathname === '/'}
-				Menú
-			{/if}
-			{#if $page.url.pathname === '/carrito'}
-				Carrito
-			{/if}
-			
-			<iconify-icon  class = "text-4xl" icon={showCollapse? "mdi:chevron-up": "mdi:chevron-down"} />
-			<span class="sr-only">Open main menu</span>
+					data-collapse-toggle="navbar-sticky"
+					type="button"
+					class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden"
+					aria-controls="navbar-sticky"
+					aria-expanded="false"
+					on:click={() => {
+						showCollapse = !showCollapse;
+					}}
+				>
+					{#if $page.url.pathname === '/acerca'}
+						Acerca de nosotros
+					{/if}
+					{#if $page.url.pathname === '/'}
+						Menú
+					{/if}
+					{#if $page.url.pathname === '/carrito'}
+						Carrito
+					{/if}
 
-			</button>
+					<iconify-icon
+						class="text-4xl"
+						icon={showCollapse ? 'mdi:chevron-up' : 'mdi:chevron-down'}
+					/>
+					<span class="sr-only">Open main menu</span>
+				</button>
 				<div
 					class="flex order-2 items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
 					id="navbar-sticky"
@@ -56,23 +54,22 @@
 					>
 						<li>
 							<a
+								href="/"
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
+								class:text-blue-700={$page.url.pathname === '/'}>Menú</a
+							>
+						</li>
+						<li>
+							<a
 								href="/acerca"
 								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
 								class:text-blue-700={$page.url.pathname === '/acerca'}
 								aria-current="page">Acerca de nostros</a
 							>
 						</li>
-						<li>
-							<a
-								href="/"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-								class:text-blue-700={$page.url.pathname === '/'}>Menú</a
-							>
-						</li>
-
 					</ul>
 				</div>
-				<div class = "flex order-3">
+				<div class="flex order-3">
 					<a href="/carrito">
 						<button class="btn btn-ghost btn-circle" type="button">
 							<div class="indicator">
@@ -93,7 +90,6 @@
 							</div>
 						</button>
 					</a>
-
 				</div>
 			</div>
 
@@ -105,24 +101,24 @@
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<ul
 							class="flex flex-col md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0"
-							on:click={()=>{
+							on:click={() => {
 								showCollapse = false;
 							}}
 						>
-							<li>
-								<a
-									href="/acerca"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-									class:text-blue-700={$page.url.pathname === '/acerca'}
-									aria-current="page">Acerca de nosotros</a
-								>
-							</li>
 							<li>
 								<a
 									href="/"
 									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
 									class:text-blue-700={$page.url.pathname === '/'}
 									aria-current="page">Menú</a
+								>
+							</li>
+							<li>
+								<a
+									href="/acerca"
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
+									class:text-blue-700={$page.url.pathname === '/acerca'}
+									aria-current="page">Acerca de nosotros</a
 								>
 							</li>
 						</ul>
@@ -132,8 +128,6 @@
 		</div>
 	</div>
 </nav>
-
-
 
 <style>
 	.navbar {
