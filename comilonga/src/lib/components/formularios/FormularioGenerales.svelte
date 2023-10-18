@@ -33,7 +33,6 @@
 			.test('type', 'Solo los siguientes formatos son acceptados: .jpeg, .jpg o .png', (value) => {
 				// No tomar en cuenta el tipo de archivo, si no hay archivo seleccionado
 				if (value.size === 0 && value.name === '') return true;
-				console.log(value);
 				return value && (value.type === 'image/jpeg' || value.type === 'image/png');
 			})
 	});
