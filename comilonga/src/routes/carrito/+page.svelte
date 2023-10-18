@@ -42,14 +42,20 @@
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
 			const collectionRef = collection(db, 'mensajes_enviados');
-			await addDoc(collectionRef, {
-				...data,
+			console.log({
 				tipoDePago: cliente.tipoDePago,
 				tipoDePedido: cliente.tipoDePedido,
 				total,
 				items: $cart.map(purgeCart),
 				date: new Date().toISOString()
 			});
+			// await addDoc(collectionRef, {
+			// 	tipoDePago: cliente.tipoDePago,
+			// 	tipoDePedido: cliente.tipoDePedido,
+			// 	total,
+			// 	items: $cart.map(purgeCart),
+			// 	date: new Date().toISOString()
+			// });
 			// goto(
 			// 	`https://wa.me/504${numero}?text=${whatsappMessageTemplate(
 			// 		data.nombre,
@@ -177,7 +183,7 @@
 										name="tipoDePedido"
 										aria-label="Para el local"
 										on:click={() => {
-											cliente.tipoDePedido == 'local';
+											cliente.tipoDePedido = 'local';
 										}}
 										checked={cliente.tipoDePedido === 'local'}
 									/>
@@ -187,7 +193,7 @@
 										name="tipoDePedido"
 										aria-label="Para llevar"
 										on:click={() => {
-											cliente.tipoDePedido == 'llevar';
+											cliente.tipoDePedido = 'llevar';
 										}}
 										checked={cliente.tipoDePedido === 'llevar'}
 									/>
@@ -204,7 +210,7 @@
 										name="tipoDePago"
 										aria-label="Efectivo"
 										on:click={() => {
-											cliente.tipoDePago == 'efectivo';
+											cliente.tipoDePago = 'efectivo';
 										}}
 										checked={cliente.tipoDePago === 'efectivo'}
 									/>
@@ -214,7 +220,7 @@
 										name="tipoDePago"
 										aria-label="Tarjeta"
 										on:click={() => {
-											cliente.tipoDePago == 'tarjeta';
+											cliente.tipoDePago = 'tarjeta';
 										}}
 										checked={cliente.tipoDePago === 'tarjeta'}
 									/>

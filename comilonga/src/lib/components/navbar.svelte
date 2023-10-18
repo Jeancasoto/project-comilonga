@@ -5,7 +5,6 @@
 	import { page } from '$app/stores';
 
 	$: amount = $cart.length;
-	$: total = $cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
 	$: logoSRC = $generals['imagen'];
 
 	let showCollapse = false;
@@ -22,7 +21,7 @@
 				<button
 					data-collapse-toggle="navbar-sticky"
 					type="button"
-					class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden"
+					class="flex flex-col w-full items-center p-2 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden"
 					aria-controls="navbar-sticky"
 					aria-expanded="false"
 					on:click={() => {
@@ -31,11 +30,9 @@
 				>
 					{#if $page.url.pathname === '/acerca'}
 						Acerca de nosotros
-					{/if}
-					{#if $page.url.pathname === '/'}
+					{:else if $page.url.pathname === '/'}
 						Menú
-					{/if}
-					{#if $page.url.pathname === '/carrito'}
+					{:else if $page.url.pathname === '/carrito'}
 						Carrito
 					{/if}
 
@@ -55,17 +52,22 @@
 						<li>
 							<a
 								href="/"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-								class:text-blue-700={$page.url.pathname === '/'}>Menú</a
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
+								class:text-primary={$page.url.pathname === '/'}
+								class:text-gray-900={$page.url.pathname !== '/'}
 							>
+								Menú
+							</a>
 						</li>
 						<li>
 							<a
 								href="/acerca"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-								class:text-blue-700={$page.url.pathname === '/acerca'}
-								aria-current="page">Acerca de nostros</a
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
+								class:text-primary={$page.url.pathname === '/acerca'}
+								class:text-gray-900={$page.url.pathname !== '/acerca'}
 							>
+								Acerca de nostros
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -108,16 +110,16 @@
 							<li>
 								<a
 									href="/"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-									class:text-blue-700={$page.url.pathname === '/'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-blue-500"
+									class:text-primary={$page.url.pathname === '/'}
 									aria-current="page">Menú</a
 								>
 							</li>
 							<li>
 								<a
 									href="/acerca"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-									class:text-blue-700={$page.url.pathname === '/acerca'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-blue-500"
+									class:text-primary={$page.url.pathname === '/acerca'}
 									aria-current="page">Acerca de nosotros</a
 								>
 							</li>
@@ -128,11 +130,3 @@
 		</div>
 	</div>
 </nav>
-
-<style>
-	.navbar {
-		background-color: rgb(255, 255, 255);
-		z-index: 1;
-		border-width: 4px;
-	}
-</style>

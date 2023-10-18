@@ -25,20 +25,29 @@
 	<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 		<div class="w-full flex flex-col md:order-2">
 			<div class="flex flex-row justify-between items-center">
-				<a href="/" class="flex items-center">
+				<a href="/admin" class="flex items-center">
 					<img src={logoSRC} class="h-16 mr-3" alt="Comilonga Logo" />
 				</a>
-
 				<button
 					data-collapse-toggle="navbar-sticky"
 					type="button"
-					class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden"
+					class="flex flex-col w-full items-center p-2 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden"
 					aria-controls="navbar-sticky"
 					aria-expanded="false"
 					on:click={() => {
 						showCollapse = !showCollapse;
 					}}
 				>
+					{#if $page.url.pathname === '/admin'}
+						Generales
+					{:else if $page.url.pathname === '/admin/productos'}
+						Productos
+					{:else if $page.url.pathname === '/admin/categorias'}
+						Categorías
+					{:else if $page.url.pathname === '/admin/resumen'}
+						Resumen
+					{/if}
+
 					<iconify-icon
 						class="text-4xl"
 						icon={showCollapse ? 'mdi:chevron-up' : 'mdi:chevron-down'}
@@ -55,8 +64,9 @@
 						<li>
 							<a
 								href="/admin/"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-								class:text-blue-700={$page.url.pathname === '/admin'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
+								class:text-primary={$page.url.pathname === '/admin'}
+								class:text-gray-900={$page.url.pathname !== '/admin'}
 								aria-current="page"
 							>
 								Generales
@@ -65,8 +75,9 @@
 						<li>
 							<a
 								href="/admin/productos"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-								class:text-blue-700={$page.url.pathname === '/admin/productos'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
+								class:text-primary={$page.url.pathname === '/admin/productos'}
+								class:text-gray-900={$page.url.pathname !== '/admin/productos'}
 							>
 								Productos
 							</a>
@@ -74,8 +85,9 @@
 						<li>
 							<a
 								href="/admin/categorias"
-								class:text-blue-700={$page.url.pathname === '/admin/categorias'}
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
+								class:text-primary={$page.url.pathname === '/admin/categorias'}
+								class:text-gray-900={$page.url.pathname !== '/admin/categorias'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
 							>
 								Categorías
 							</a>
@@ -83,8 +95,9 @@
 						<li>
 							<a
 								href="/admin/resumen"
-								class:text-blue-700={$page.url.pathname === '/admin/resumen'}
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
+								class:text-primary={$page.url.pathname === '/admin/resumen'}
+								class:text-gray-900={$page.url.pathname !== '/admin/resumen'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
 							>
 								Resumen
 							</a>
@@ -120,8 +133,8 @@
 							<li>
 								<a
 									href="/admin/"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-									class:text-blue-700={$page.url.pathname === '/admin'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary"
+									class:text-primary={$page.url.pathname === '/admin'}
 									aria-current="page"
 								>
 									Generales
@@ -130,8 +143,8 @@
 							<li>
 								<a
 									href="/admin/productos"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-									class:text-blue-700={$page.url.pathname === '/admin/productos'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary"
+									class:text-primary={$page.url.pathname === '/admin/productos'}
 									aria-current="page"
 								>
 									Productos
@@ -140,8 +153,8 @@
 							<li>
 								<a
 									href="/admin/categorias"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-									class:text-blue-700={$page.url.pathname === '/admin/categorias'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary"
+									class:text-primary={$page.url.pathname === '/admin/categorias'}
 									aria-current="page"
 								>
 									Categorías
@@ -151,8 +164,8 @@
 							<li>
 								<a
 									href="/admin/resumen"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500"
-									class:text-blue-700={$page.url.pathname === '/admin/resumen'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary"
+									class:text-primary={$page.url.pathname === '/admin/resumen'}
 									aria-current="page"
 								>
 									Resumen

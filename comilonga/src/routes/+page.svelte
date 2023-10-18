@@ -16,6 +16,21 @@
 		products = await fetchVisibleProducts();
 		categories = await fetchVisibleCategories();
 	});
+
+	function onSubmit(e) {
+		shouldShowModal = false;
+		addItem({
+			id: selectedProduct.id,
+			price: parseFloat(selectedProduct.precio),
+			title: selectedProduct.nombre,
+			quantity: selectedProduct.quantity,
+			image: selectedProduct.imageSRC,
+			notes: selectedProduct.notes,
+			description: selectedProduct.descripcion
+		});
+		toast.success(`${selectedProduct.nombre} agregado exitosamente`);
+		selectedProduct = {};
+	}
 </script>
 
 <svelte:head>
@@ -37,22 +52,7 @@
 					<h1 class="text-md text-gray-600 capitalize">{selectedProduct.descripcion}</h1>
 				</div>
 			</div>
-			<form
-				on:submit={(e) => {
-					shouldShowModal = false;
-					addItem({
-						id: selectedProduct.id,
-						price: parseFloat(selectedProduct.precio),
-						title: selectedProduct.nombre,
-						quantity: selectedProduct.quantity,
-						image: selectedProduct.imageSRC,
-						notes: selectedProduct.notes,
-						description: selectedProduct.descripcion
-					});
-					toast.success(`${selectedProduct.nombre} agregado exitosamente`);
-					selectedProduct = {};
-				}}
-			>
+			<form on:submit|preventDefault={onSubmit}>
 				<label class="label" for="notas">
 					<span class="label-text">Notas al platillo</span>
 				</label>

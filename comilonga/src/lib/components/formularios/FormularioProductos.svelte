@@ -78,6 +78,7 @@
 				dispatch('success', info);
 			}
 			uploadedImage = '';
+			errors = {};
 			e.target.reset();
 		} catch (error) {
 			if (error instanceof yup.ValidationError) {
@@ -206,6 +207,7 @@
 				on:click={() => {
 					dispatch('cancel');
 					uploadedImage = '';
+					errors = {};
 				}}>Cancelar</button
 			>
 			<button type="submit" class="btn btn-success">{`${producto ? 'Editar' : 'Crear'}`}</button>

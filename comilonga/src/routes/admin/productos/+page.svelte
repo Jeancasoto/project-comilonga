@@ -2,7 +2,7 @@
 	// @ts-nocheck
 	import { db } from '$lib/firebase';
 	import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-	import { fetchAllCategories } from '$lib/helpers/firebase';
+	import { fetchAllCategories, fetchAllProducts } from '$lib/helpers/firebase';
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
 	import FormularioProductos from '$lib/components/formularios/FormularioProductos.svelte';
