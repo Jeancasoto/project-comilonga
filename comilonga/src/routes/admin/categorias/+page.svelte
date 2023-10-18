@@ -15,10 +15,8 @@
 
 	async function fetchCategorias() {
 		const collectionRef = collectionGroup(db, 'categorias');
-		console.log('wenas');
 		const querySnap = await getDocs(collectionRef);
 		categories = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-		console.log(categories);
 	}
 
 	onMount(async () => {
@@ -38,7 +36,6 @@
 				<FormularioCategorias
 					categoria={modalType === 'EDIT' ? selectedCategory : undefined}
 					on:success={async () => {
-						console.log('success');
 						shouldShowModal = false;
 						await fetchCategorias();
 						toast.success(`Categoria ${modalType === 'EDIT' ? 'editada' : 'creada'} exitosamente`);
@@ -96,55 +93,55 @@
 </div>
 <div class="flex flex-col justify-center items-center w-full">
 	<div>
-	{#each categories as producto}
-
-		<div class="flex w-full categories">
-			<div class="grid p-5 h-20 text-wrap text-2xl justify-start font-bold break-all w-full flex-grow card  rounded-box place-items-center">
+		{#each categories as producto}
+			<div class="flex w-full categories">
+				<div
+					class="grid p-5 h-20 text-wrap text-2xl justify-start font-bold break-all w-full flex-grow card rounded-box place-items-center"
+				>
 					{producto.nombre}
-			</div>
+				</div>
 
-			
-			<div class="flex flex-row text-wrap h-20 w-full flex-grow card rounded-box place-items-center">
-				<button
-					class="btn btn-warning"
-					on:click={() => {
-						modalType = 'EDIT';
-						selectedCategory = producto;
-						shouldShowModal = true;
-					}}
+				<div
+					class="flex flex-row text-wrap h-20 w-full flex-grow card rounded-box place-items-center"
 				>
-					<iconify-icon icon="mdi:edit" />
-				</button>
-				<button
-					class="btn btn-info"
-					on:click={() => {
-						const docRef = doc(db, 'categorias', producto.id);
-						updateDoc(docRef, { is_visible: !producto.is_visible });
-						producto.is_visible = !producto.is_visible;
-					}}
-				>
-					<iconify-icon icon={producto.is_visible ? 'mdi:eye' : 'mdi:eye-off'} />
-				</button>
-				<button
-					class="btn btn-error"
-					on:click={() => {
-						modalType = 'DELETE';
-						selectedCategory = producto;
-						shouldShowModal = true;
-					}}
-				>
-					<iconify-icon icon="mdi:trash" />
-				</button>
+					<button
+						class="btn btn-warning"
+						on:click={() => {
+							modalType = 'EDIT';
+							selectedCategory = producto;
+							shouldShowModal = true;
+						}}
+					>
+						<iconify-icon icon="mdi:edit" />
+					</button>
+					<button
+						class="btn btn-info"
+						on:click={() => {
+							const docRef = doc(db, 'categorias', producto.id);
+							updateDoc(docRef, { is_visible: !producto.is_visible });
+							producto.is_visible = !producto.is_visible;
+						}}
+					>
+						<iconify-icon icon={producto.is_visible ? 'mdi:eye' : 'mdi:eye-off'} />
+					</button>
+					<button
+						class="btn btn-error"
+						on:click={() => {
+							modalType = 'DELETE';
+							selectedCategory = producto;
+							shouldShowModal = true;
+						}}
+					>
+						<iconify-icon icon="mdi:trash" />
+					</button>
+				</div>
 			</div>
-		</div>
-	{/each}
-</div>
-
+		{/each}
+	</div>
 </div>
 
 <style>
-
-	.categories{
+	.categories {
 		display: flex;
 		margin: 10px 0px;
 

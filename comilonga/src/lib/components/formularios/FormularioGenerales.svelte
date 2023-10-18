@@ -1,5 +1,5 @@
 <script>
-	// @ts-nocheck	
+	// @ts-nocheck
 	import { onMount } from 'svelte';
 
 	import { db, storage } from '$lib/firebase';
@@ -12,7 +12,6 @@
 	import 'iconify-icon';
 	import * as yup from 'yup';
 	import { getFileDownloadURL } from '$lib/helpers/admin_helper';
-
 
 	const schema = yup.object().shape({
 		quienes_somos: yup.string().required('Quienes somos es requerido').ensure(),
@@ -34,6 +33,7 @@
 			.test('type', 'Solo los siguientes formatos son acceptados: .jpeg, .jpg o .png', (value) => {
 				// No tomar en cuenta el tipo de archivo, si no hay archivo seleccionado
 				if (value.size === 0 && value.name === '') return true;
+				console.log(value);
 				return value && (value.type === 'image/jpeg' || value.type === 'image/png');
 			})
 	});
@@ -55,9 +55,10 @@
 			const formData = new FormData(e.target);
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
-			
+
 			// Guardando en firebase al guardar el formulario de generales
-			const docRef = await updateDoc(doc(db, 'generales', generals.id), {
+			const docRef = doc(db, 'generales', generals.id);
+			await updateDoc(docRef, {
 				quienes_somos: data.quienes_somos || '',
 				nuestra_mision: data.nuestra_mision || '',
 				nuestra_vision: data.nuestra_vision || '',
@@ -76,16 +77,10 @@
 			if (file_to_upload != null) {
 				const imgRef = ref(storage, logo_url);
 				await uploadBytes(imgRef, data['logo']);
+				const imagen = await getFileDownloadURL(logo_url);
+				await updateDoc(docRef, { imagen });
 			}
-			const imagen = await getFileDownloadURL(logo_url);
-			await updateDoc(generals.id, { imagen });
 		} catch (error) {
-			console.log(error)
-
-			// Validacion picara, solo para hacerlo funcionar en la demo. Tirar Typeerror y no entiendo el motivo.
-			if (type(error) != TypeError){
-				error_saving = true;
-			}
 			showModal = true;
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);

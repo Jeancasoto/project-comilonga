@@ -21,8 +21,7 @@
 	$: total = $cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 	$: redes_sociales = $generals['redes_sociales'] ?? {};
 
-	$: numero = '97042422';
-	// $: numero = redes_sociales['whatsapp_link'];
+	$: numero = redes_sociales['whatsapp_link'];
 
 	let errors = {};
 	const schema = yup.object().shape({
@@ -42,30 +41,24 @@
 			const data = Object.fromEntries(formData);
 			await schema.validate(data, { abortEarly: false });
 			const collectionRef = collection(db, 'mensajes_enviados');
-			console.log({
+
+			await addDoc(collectionRef, {
 				tipoDePago: cliente.tipoDePago,
 				tipoDePedido: cliente.tipoDePedido,
 				total,
 				items: $cart.map(purgeCart),
 				date: new Date().toISOString()
 			});
-			// await addDoc(collectionRef, {
-			// 	tipoDePago: cliente.tipoDePago,
-			// 	tipoDePedido: cliente.tipoDePedido,
-			// 	total,
-			// 	items: $cart.map(purgeCart),
-			// 	date: new Date().toISOString()
-			// });
-			// goto(
-			// 	`https://wa.me/504${numero}?text=${whatsappMessageTemplate(
-			// 		data.nombre,
-			// 		data.numero,
-			// 		data?.notasCocina ?? '',
-			// 		cliente.tipoDePedido,
-			// 		cliente.tipoDePago,
-			// 		$cart
-			// 	)}`
-			// );
+			goto(
+				`https://wa.me/504${numero}?text=${whatsappMessageTemplate(
+					data.nombre,
+					data.numero,
+					data?.notasCocina ?? '',
+					cliente.tipoDePedido,
+					cliente.tipoDePago,
+					$cart
+				)}`
+			);
 		} catch (error) {
 			if (error instanceof yup.ValidationError) {
 				errors = extractErrors(error);
