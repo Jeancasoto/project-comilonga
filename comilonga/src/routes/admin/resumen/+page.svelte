@@ -70,7 +70,7 @@
 		datasets: [
 			{
 				label: 'Total de productos enviados',
-				backgroundColor: ['#f6cbd1'],
+				backgroundColor: ['#D15454'],
 				data: products.map((prod) => {
 					return mensajesParseados.reduce((acc, curr) => {
 						if (curr.date.year() === selectedYear && curr.date.month() + 1 === selectedMonth) {
@@ -91,7 +91,7 @@
 		datasets: [
 			{
 				label: 'Total de tipos pedidos',
-				backgroundColor: ['#f6cbd1', '#d1c1d7'],
+				backgroundColor: ['#D15454', '#48ACAC'],
 				data: ['llevar', 'local'].map((tipo) => {
 					return mensajesParseados.reduce((acc, curr) => {
 						if (
@@ -113,7 +113,7 @@
 		datasets: [
 			{
 				label: 'Total tipo de pago',
-				backgroundColor: ['#f6cbd1', '#d1c1d7'],
+				backgroundColor: ['#48ACAC', '#D15454'],
 				data: ['efectivo', 'tarjeta'].map((tipo) => {
 					return mensajesParseados.reduce((acc, curr) => {
 						if (

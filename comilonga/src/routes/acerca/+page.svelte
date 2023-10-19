@@ -19,7 +19,7 @@
 				<img class="img contain_img" src={logoSRC} alt="logo comilonga" />
 			</div>
 		</div>
-		<div class="hero-content text-center text-neutral-content">
+		<div class="hero-content text-center text-neutral">
 			<div class="max-w-md">
 				<h1 class="mb-5 text-5xl font-bold">ACERCA DE NOSOTROS</h1>
 				<p class="mb-5">
@@ -27,7 +27,7 @@
 				</p>
 			</div>
 		</div>
-		<div class="hero-content text-center text-neutral-content">
+		<div class="hero-content text-center text-neutral">
 			<div class="max-w-md">
 				<h1 class="mb-5 text-5xl font-bold">NUESTRA MISION</h1>
 				<p class="mb-5">
@@ -35,7 +35,7 @@
 				</p>
 			</div>
 		</div>
-		<div class="hero-content text-center text-neutral-content">
+		<div class="hero-content text-center text-neutral">
 			<div class="max-w-md">
 				<h1 class="mb-5 text-5xl font-bold">NUESTRA VISION</h1>
 				<p class="mb-5">

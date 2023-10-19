@@ -100,7 +100,7 @@
 			<button
 				type="button"
 				class="btn md:btn-md btn-sm btn-secondary flex-shrink-0 rounded-full"
-				class:bg-primary={category.id === selectedCategory}
+				class:bg-primary-focus={category.id === selectedCategory}
 				on:click={() => {
 					selectedCategoryName = category.nombre;
 					if (selectedCategory === category.id) {

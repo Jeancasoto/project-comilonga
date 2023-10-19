@@ -64,8 +64,8 @@
 						<li>
 							<a
 								href="/admin/"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
-								class:text-primary={$page.url.pathname === '/admin'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary font-bold"
+								class:text-secondary={$page.url.pathname === '/admin'}
 								class:text-gray-900={$page.url.pathname !== '/admin'}
 								aria-current="page"
 							>
@@ -75,8 +75,8 @@
 						<li>
 							<a
 								href="/admin/productos"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
-								class:text-primary={$page.url.pathname === '/admin/productos'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary font-bold"
+								class:text-secondary={$page.url.pathname === '/admin/productos'}
 								class:text-gray-900={$page.url.pathname !== '/admin/productos'}
 							>
 								Productos
@@ -85,9 +85,9 @@
 						<li>
 							<a
 								href="/admin/categorias"
-								class:text-primary={$page.url.pathname === '/admin/categorias'}
+								class:text-secondary={$page.url.pathname === '/admin/categorias'}
 								class:text-gray-900={$page.url.pathname !== '/admin/categorias'}
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary font-bold"
 							>
 								Categorías
 							</a>
@@ -95,9 +95,9 @@
 						<li>
 							<a
 								href="/admin/resumen"
-								class:text-primary={$page.url.pathname === '/admin/resumen'}
+								class:text-secondary={$page.url.pathname === '/admin/resumen'}
 								class:text-gray-900={$page.url.pathname !== '/admin/resumen'}
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary font-bold"
 							>
 								Resumen
 							</a>
@@ -133,8 +133,8 @@
 							<li>
 								<a
 									href="/admin/"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary"
-									class:text-primary={$page.url.pathname === '/admin'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary"
+									class:text-secondary={$page.url.pathname === '/admin'}
 									aria-current="page"
 								>
 									Generales
@@ -143,8 +143,8 @@
 							<li>
 								<a
 									href="/admin/productos"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary"
-									class:text-primary={$page.url.pathname === '/admin/productos'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary"
+									class:text-secondary={$page.url.pathname === '/admin/productos'}
 									aria-current="page"
 								>
 									Productos
@@ -153,8 +153,8 @@
 							<li>
 								<a
 									href="/admin/categorias"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary"
-									class:text-primary={$page.url.pathname === '/admin/categorias'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary"
+									class:text-secondary={$page.url.pathname === '/admin/categorias'}
 									aria-current="page"
 								>
 									Categorías
@@ -164,8 +164,8 @@
 							<li>
 								<a
 									href="/admin/resumen"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary"
-									class:text-primary={$page.url.pathname === '/admin/resumen'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary"
+									class:text-secondary={$page.url.pathname === '/admin/resumen'}
 									aria-current="page"
 								>
 									Resumen

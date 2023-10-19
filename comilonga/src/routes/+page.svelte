@@ -68,7 +68,7 @@
 				<div class="flex flex-row w-full justify-between items-center mt-4">
 					<div class="btn-group">
 						<button
-							class="btn btn-secondary"
+							class="btn btn-primary"
 							type="button"
 							on:click={() => {
 								if (selectedProduct.quantity > 1) selectedProduct.quantity--;
@@ -76,11 +76,11 @@
 						>
 							-
 						</button>
-						<div class="btn btn-secondary hover:bg-secondary hover:cursor-default">
+						<div class="btn btn-primary hover:bg-primary hover:cursor-default">
 							{selectedProduct.quantity}
 						</div>
 						<button
-							class="btn btn-secondary"
+							class="btn btn-primary"
 							type="button"
 							on:click={() => {
 								selectedProduct.quantity++;
@@ -101,7 +101,7 @@
 					<button
 						type="button"
 						class="btn md:btn-md btn-sm btn-secondary flex-shrink-0 rounded-full"
-						class:bg-primary={category.id === selectedCategory}
+						class:bg-primary-focus={category.id === selectedCategory}
 						on:click={() => {
 							selectedCategoryName = category.nombre;
 							if (selectedCategory === category.id) {
@@ -142,7 +142,7 @@
 
 						<div class="cart_button">
 							<button
-								class="btn btn-primary"
+								class="btn btn-primary hover: bg-primary-hover"
 								on:keypress={(e) => {}}
 								on:click={(e) => {
 									e.stopPropagation();

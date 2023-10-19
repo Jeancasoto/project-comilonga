@@ -16,7 +16,7 @@
 	$: email = redes_sociales['email'];
 </script>
 
-<footer class="p-10 bg-white text-neutral-content">
+<footer class="p-10 bg-white text-neutral">
 	<div class="flex flex-row gap-4 items-center">
 		<img src={logoSRC} alt="La comilonga logo" class="w-1/2 md:w-1/6" />
 		<div class="flex flex-col gap-4">

@@ -52,8 +52,8 @@
 						<li>
 							<a
 								href="/"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
-								class:text-primary={$page.url.pathname === '/'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary font-bold"
+								class:text-secondary={$page.url.pathname === '/'}
 								class:text-gray-900={$page.url.pathname !== '/'}
 							>
 								Menú
@@ -62,8 +62,8 @@
 						<li>
 							<a
 								href="/acerca"
-								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-primary font-bold"
-								class:text-primary={$page.url.pathname === '/acerca'}
+								class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-secondary font-bold"
+								class:text-secondary={$page.url.pathname === '/acerca'}
 								class:text-gray-900={$page.url.pathname !== '/acerca'}
 							>
 								Acerca de nostros
@@ -110,16 +110,16 @@
 							<li>
 								<a
 									href="/"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-blue-500"
-									class:text-primary={$page.url.pathname === '/'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-blue-500"
+									class:text-secondary={$page.url.pathname === '/'}
 									aria-current="page">Menú</a
 								>
 							</li>
 							<li>
 								<a
 									href="/acerca"
-									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary md:p-0 md:dark:hover:text-blue-500"
-									class:text-primary={$page.url.pathname === '/acerca'}
+									class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-secondary md:p-0 md:dark:hover:text-blue-500"
+									class:text-secondary={$page.url.pathname === '/acerca'}
 									aria-current="page">Acerca de nosotros</a
 								>
 							</li>

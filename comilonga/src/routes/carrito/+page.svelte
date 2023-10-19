@@ -79,7 +79,7 @@
 							<h2 class="text-xl capitalize text-wrap">{item.title}</h2>
 							<div class="btn-group">
 								<button
-									class="btn btn-secondary btn-sm"
+									class="btn btn-primary btn-sm"
 									type="button"
 									on:click={() => {
 										if (item.quantity > 1) {
@@ -95,11 +95,11 @@
 										<iconify-icon icon="mdi:minus" />
 									{/if}
 								</button>
-								<div class="btn btn-secondary btn-sm hover:bg-secondary hover:cursor-default">
+								<div class="btn btn-primary btn-sm hover:bg-primary hover:cursor-default">
 									{item.quantity}
 								</div>
 								<button
-									class="btn btn-secondary btn-sm"
+									class="btn btn-primary btn-sm"
 									type="button"
 									on:click={() => {
 										item.quantity++;
