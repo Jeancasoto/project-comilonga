@@ -19,7 +19,7 @@ export const getGeneralsDoc = async () => {
 };
 
 export async function fetchAllProducts() {
-	const collectionRef = collectionGroup(db, 'productos');
+	const collectionRef = query(collectionGroup(db, 'productos'), where('is_deleted', '==', false));
 	const querySnap = await getDocs(collectionRef);
 	const productsDocs = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 	return await Promise.all(
@@ -31,7 +31,11 @@ export async function fetchAllProducts() {
 }
 
 export async function fetchVisibleProducts() {
-	const collectionRef = query(collectionGroup(db, 'productos'), where('is_visible', '==', true));
+	const collectionRef = query(
+		collectionGroup(db, 'productos'),
+		where('is_visible', '==', true),
+		where('is_deleted', '==', false)
+	);
 	const querySnap = await getDocs(collectionRef);
 	const productsDocs = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 	return await Promise.all(
@@ -43,13 +47,17 @@ export async function fetchVisibleProducts() {
 }
 
 export async function fetchAllCategories() {
-	const collectionRef = collectionGroup(db, 'categorias');
+	const collectionRef = query(collectionGroup(db, 'categorias'), where('is_deleted', '==', false));
 	const querySnap = await getDocs(collectionRef);
 	return querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 }
 
 export async function fetchVisibleCategories() {
-	const collectionRef = query(collectionGroup(db, 'categorias'), where('is_visible', '==', true));
+	const collectionRef = query(
+		collectionGroup(db, 'categorias'),
+		where('is_visible', '==', true),
+		where('is_deleted', '==', false)
+	);
 	const querySnap = await getDocs(collectionRef);
 	return querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 }

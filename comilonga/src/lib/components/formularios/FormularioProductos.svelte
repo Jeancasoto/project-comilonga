@@ -68,7 +68,12 @@
 				dispatch('success', info);
 			} else {
 				const collectionRef = collection(db, 'productos');
-				const doc = await addDoc(collectionRef, { ...data, is_visible: true, imagen: '' });
+				const doc = await addDoc(collectionRef, {
+					...data,
+					is_visible: true,
+					is_deleted: false,
+					imagen: ''
+				});
 
 				const imagePath = `productos/${doc.id}/imagen.jpg`;
 				const imgRef = ref(storage, imagePath);

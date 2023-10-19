@@ -38,7 +38,11 @@
 				dispatch('success', info);
 			} else {
 				const collectionRef = collection(db, 'categorias');
-				const docRef = await addDoc(collectionRef, { ...data, is_visible: true });
+				const docRef = await addDoc(collectionRef, {
+					...data,
+					is_visible: true,
+					is_deleted: false
+				});
 				const doc = await getDoc(docRef);
 				dispatch('success', { id: doc.id, ...doc.data() });
 			}

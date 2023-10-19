@@ -62,7 +62,7 @@
 						on:click={async () => {
 							try {
 								const docRef = doc(db, 'categorias', selectedCategory.id);
-								await deleteDoc(docRef);
+								await updateDoc(docRef, { is_deleted: true });
 								await fetchCategorias();
 								shouldShowModal = false;
 								toast.success('Categoria eliminada exitosamente');

@@ -63,7 +63,7 @@
 						on:click={async () => {
 							try {
 								const docRef = doc(db, 'productos', selectedProduct.id);
-								await deleteDoc(docRef);
+								await updateDoc(docRef, { is_deleted: true });
 								toast.success('Producto eliminado exitosamente');
 								shouldShowModal = false;
 								products = await fetchAllProducts();
