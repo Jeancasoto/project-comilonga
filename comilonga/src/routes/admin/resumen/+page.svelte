@@ -3,8 +3,7 @@
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
 	import { Bar, Pie } from 'svelte-chartjs';
-	import toast from 'svelte-french-toast';
-	import { fetchAllProducts, fetchAllCategories, fetchAllMessages } from '$lib/helpers/firebase';
+	import { fetchAllCategories, fetchAllMessages, fetchAllProducts } from '$lib/helpers/firebase';
 	import {
 		Chart,
 		Title,

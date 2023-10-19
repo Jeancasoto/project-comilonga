@@ -18,8 +18,20 @@ export const getGeneralsDoc = async () => {
 	return { ...current_doc.data(), id: current_doc.id };
 };
 
-export async function fetchAllProducts() {
+export async function fetchAllAvailableProducts() {
 	const collectionRef = query(collectionGroup(db, 'productos'), where('is_deleted', '==', false));
+	const querySnap = await getDocs(collectionRef);
+	const productsDocs = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+	return await Promise.all(
+		productsDocs.map(async (product) => {
+			const url = await getFileDownloadURL(product.imagen);
+			return { ...product, imageSRC: url };
+		})
+	);
+}
+
+export async function fetchAllProducts() {
+	const collectionRef = collectionGroup(db, 'productos');
 	const querySnap = await getDocs(collectionRef);
 	const productsDocs = querySnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 	return await Promise.all(

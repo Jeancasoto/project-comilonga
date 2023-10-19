@@ -1,8 +1,8 @@
 <script>
 	// @ts-nocheck
 	import { db } from '$lib/firebase';
-	import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-	import { fetchAllCategories, fetchAllProducts } from '$lib/helpers/firebase';
+	import { doc, updateDoc } from 'firebase/firestore';
+	import { fetchAllCategories, fetchAllAvailableProducts } from '$lib/helpers/firebase';
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
 	import FormularioProductos from '$lib/components/formularios/FormularioProductos.svelte';
@@ -22,7 +22,7 @@
 		if (auth.currentUser === null) {
 			goto('/admin/login');
 		}
-		products = await fetchAllProducts();
+		products = await fetchAllAvailableProducts();
 		categories = await fetchAllCategories();
 	});
 </script>
@@ -38,7 +38,7 @@
 					categorias={categories}
 					on:success={async () => {
 						shouldShowModal = false;
-						products = await fetchAllProducts();
+						products = await fetchAllAvailableProducts();
 						toast.success(`Producto ${modalType === 'EDIT' ? 'editado' : 'creado'} exitosamente`);
 					}}
 					on:cancel={() => {
@@ -66,7 +66,7 @@
 								await updateDoc(docRef, { is_deleted: true });
 								toast.success('Producto eliminado exitosamente');
 								shouldShowModal = false;
-								products = await fetchAllProducts();
+								products = await fetchAllAvailableProducts();
 							} catch (error) {
 								toast.error('Hubo un error al eliminar el producto');
 							}
